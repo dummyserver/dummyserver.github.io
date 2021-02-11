@@ -19,10 +19,10 @@ public class InMemoryDummyServerRequestResponseStore implements IDummyServerRequ
 
     @Override
     public Optional<DummyServerResponse> find(HttpServletRequest servletRequest) {
-        for (DummyServerRequestResponsePair requestResponse : requestResponseList) {
-            if (requestResponse.isDefiningDifferentMethodThan(servletRequest)) continue;
-            if (requestResponse.isDefiningDifferentPathThan(servletRequest)) continue;
-            return Optional.of(requestResponse.getResponse());
+        for (DummyServerRequestResponsePair requestResponsePair : requestResponseList) {
+            if (requestResponsePair.getRequest().equals(servletRequest)) {
+                return Optional.of(requestResponsePair.getResponse());
+            }
         }
         return Optional.empty();
     }
