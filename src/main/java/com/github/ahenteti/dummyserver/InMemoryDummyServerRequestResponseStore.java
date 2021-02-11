@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -23,7 +22,7 @@ public class InMemoryDummyServerRequestResponseStore implements IDummyServerRequ
     public List<DummyServerRequestResponsePair> find(HttpServletRequest servletRequest) {
         List<DummyServerRequestResponsePair> res = new ArrayList<>();
         for (DummyServerRequestResponsePair requestResponsePair : requestResponseList) {
-            if (requestResponsePair.getRequest().equals(servletRequest)) {
+            if (requestResponsePair.getRequest().equalsTo(servletRequest)) {
                 res.add(requestResponsePair);
             }
         }

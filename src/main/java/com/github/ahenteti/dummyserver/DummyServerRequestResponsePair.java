@@ -8,7 +8,7 @@ import java.util.Objects;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DummyServerRequestResponsePair {
-    
+
     private Integer priority = 5;
     private DummyServerRequest request;
     private DummyServerResponse response;

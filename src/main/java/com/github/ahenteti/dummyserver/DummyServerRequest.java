@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -28,7 +27,7 @@ public class DummyServerRequest {
     private Map<String, ValueExpectation> headers = new HashMap<>();
     private ValueExpectation body = new NoValueExpectation();
 
-    public boolean equals(HttpServletRequest request) {
+    public boolean equalsTo(HttpServletRequest request) {
         if (!request.getRequestURI().matches(path)) return false;
         if (!StringUtils.equalsIgnoreCase(method, request.getMethod())) return false;
         for (Map.Entry<String, ValueExpectation> query : queries.entrySet()) {
