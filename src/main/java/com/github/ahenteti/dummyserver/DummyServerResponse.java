@@ -2,6 +2,7 @@ package com.github.ahenteti.dummyserver;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import lombok.Data;
 import org.springframework.http.ResponseEntity;
 
@@ -20,6 +21,9 @@ public class DummyServerResponse {
         ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.status(this.status);
         headers.forEach(responseBuilder::header);
         if (body != null) {
+            if (body instanceof TextNode) {
+                return responseBuilder.body(((TextNode) body).asText());
+            }
             return responseBuilder.body(body);
         }
         return responseBuilder.build();
