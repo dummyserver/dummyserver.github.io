@@ -1,9 +1,9 @@
 package com.github.ahenteti.dummyserver;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
+import java.util.List;
 
 public interface IDummyServerRequestResponseStore {
     void add(DummyServerRequestResponsePair requestResponse);
-    Optional<DummyServerResponse> find(HttpServletRequest request);
+    List<DummyServerRequestResponsePair> find(HttpServletRequest request);
 }

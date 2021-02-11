@@ -8,11 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
+import java.util.Comparator;
+import java.util.List;
 
 @RestController
 public class DummyServerController {
-    
+
     @Autowired
     private IDummyServerRequestResponseStore store;
 
@@ -23,10 +24,11 @@ public class DummyServerController {
 
     @RequestMapping("/**")
     public ResponseEntity<?> getDummyResponse(HttpServletRequest request) {
-        Optional<DummyServerResponse> response = store.find(request);
-        if (response.isPresent()) {
-            return response.get().toResponseEntity();
+        List<DummyServerRequestResponsePair> requestResponsePairList = store.find(request);
+        if (requestResponsePairList.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+        requestResponsePairList.sort(Comparator.comparing(DummyServerRequestResponsePair::getPriority));
+        return requestResponsePairList.get(0).getResponse().toResponseEntity();
     }
 }

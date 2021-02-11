@@ -3,7 +3,9 @@ package com.github.ahenteti.dummyserver;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -18,12 +20,13 @@ public class InMemoryDummyServerRequestResponseStore implements IDummyServerRequ
     }
 
     @Override
-    public Optional<DummyServerResponse> find(HttpServletRequest servletRequest) {
+    public List<DummyServerRequestResponsePair> find(HttpServletRequest servletRequest) {
+        List<DummyServerRequestResponsePair> res = new ArrayList<>();
         for (DummyServerRequestResponsePair requestResponsePair : requestResponseList) {
             if (requestResponsePair.getRequest().equals(servletRequest)) {
-                return Optional.of(requestResponsePair.getResponse());
+                res.add(requestResponsePair);
             }
         }
-        return Optional.empty();
+        return res;
     }
 }
