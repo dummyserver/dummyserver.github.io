@@ -22,7 +22,7 @@ public class DummyServerResponse {
         headers.forEach(responseBuilder::header);
         if (body != null) {
             if (body instanceof TextNode) {
-                return responseBuilder.body(((TextNode) body).asText());
+                return responseBuilder.body(body.asText());
             }
             return responseBuilder.body(body);
         }

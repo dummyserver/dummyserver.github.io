@@ -5,11 +5,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import lombok.Data;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -25,7 +23,6 @@ public class DummyServerRequest {
     private String path;
     private Map<String, ValueExpectation> queries = new HashMap<>();
     private Map<String, ValueExpectation> headers = new HashMap<>();
-    private ValueExpectation body = new NoValueExpectation();
 
     public boolean equalsTo(HttpServletRequest request) {
         if (!request.getRequestURI().matches(path)) return false;
@@ -41,12 +38,6 @@ public class DummyServerRequest {
             String headerValue = request.getHeader(headerName);
             ValueExpectation valueExpectation = header.getValue();
             if (valueExpectation.isIncorrect(headerValue)) return false;
-        }
-        try {
-            String requestBody = IOUtils.toString(request.getReader());
-            if (body.isIncorrect(requestBody)) return false;
-        } catch (IOException e) {
-            return false;
         }
         return true;
     }
