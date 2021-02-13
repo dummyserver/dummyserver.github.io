@@ -1,0 +1,46 @@
+[
+	{
+		"description": "GET Alex user",
+		"request": {
+			"method": "GET",
+			"path": "/user",
+			"headers": {
+				"User-Id": {
+					"equalsTo": "1"
+				}
+			}
+		},
+		"response": {
+			"status": 200,
+			"headers": {
+				"Content-Type": "application/json"
+			},
+			"body": [
+				{
+					"name": "Alex"
+				}
+			]
+		}
+	},
+	{
+		"description": "GET Bob user",
+		"request": {
+			"method": "GET",
+			"path": "/user",
+			"headers": {
+				"User-Id": "2"
+			}
+		},
+		"response": {
+			"status": 200,
+			"headers": {
+				"Content-Type": "application/json"
+			},
+			"body": [
+				{
+					"name": "Bob"
+				}
+			]
+		}
+	}
+]
