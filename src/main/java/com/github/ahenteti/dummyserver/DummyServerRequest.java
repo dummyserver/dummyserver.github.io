@@ -15,23 +15,23 @@ public class DummyServerRequest {
 
     private String method = "GET";
     private String path;
-    private Map<String, ValueExpectation> queries = new HashMap<>();
-    private Map<String, ValueExpectation> headers = new HashMap<>();
+    private Map<String, Object> queries = new HashMap<>();
+    private Map<String, Object> headers = new HashMap<>();
 
     public boolean matches(HttpServletRequest request) {
         if (!request.getRequestURI().matches(path)) return false;
         if (!StringUtils.equalsIgnoreCase(method, request.getMethod())) return false;
-        for (Map.Entry<String, ValueExpectation> query : queries.entrySet()) {
+        for (Map.Entry<String, Object> query : queries.entrySet()) {
             String queryName = query.getKey();
             String queryValue = request.getParameter(queryName);
-            ValueExpectation valueExpectation = query.getValue();
-            if (valueExpectation.isIncorrect(queryValue)) return false;
+            Object expectation = query.getValue();
+            if (Expectation.valueNotAsExpected(queryValue, expectation)) return false;
         }
-        for (Map.Entry<String, ValueExpectation> header : headers.entrySet()) {
+        for (Map.Entry<String, Object> header : headers.entrySet()) {
             String headerName = header.getKey();
             String headerValue = request.getHeader(headerName);
-            ValueExpectation valueExpectation = header.getValue();
-            if (valueExpectation.isIncorrect(headerValue)) return false;
+            Object expectation = header.getValue();
+            if (Expectation.valueNotAsExpected(headerValue, expectation)) return false;
         }
         return true;
     }
@@ -59,7 +59,7 @@ public class DummyServerRequest {
                 .toString();
     }
     
-    private String toString(Map<String, ValueExpectation> map) {
+    private String toString(Map<String, Object> map) {
         return map.keySet()
                 .stream()
                 .sorted()
