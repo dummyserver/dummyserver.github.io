@@ -1,9 +1,5 @@
 package com.github.ahenteti.dummyserver;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
@@ -11,13 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DummyServerRequest {
-
-    @JsonIgnore
-    private JsonMapper jsonMapper = new CustomJsonMapper();
 
     private String method = "GET";
     private String path;
@@ -47,24 +41,29 @@ public class DummyServerRequest {
         if (this == o) return true;
         if (!(o instanceof DummyServerRequest)) return false;
         DummyServerRequest that = (DummyServerRequest) o;
-        try {
-            return Objects.equals(jsonMapper.readTree(this.toJson()), jsonMapper.readTree(that.toJson()));
-        } catch (JsonProcessingException e) {
-            return false;
-        }
+        return Objects.equals(this.toString(), that.toString());
     }
 
     @Override
     public int hashCode() {
-        return toJson().hashCode();
+        return toString().hashCode();
     }
 
-    public String toJson() {
-        try {
-            return jsonMapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            return "{}";
-        }
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", DummyServerRequest.class.getSimpleName() + "[", "]")
+                .add("method='" + method + "'")
+                .add("path='" + path + "'")
+                .add("queries=" + toString(queries))
+                .add("headers=" + toString(headers))
+                .toString();
     }
-
+    
+    private String toString(Map<String, ValueExpectation> map) {
+        return map.keySet()
+                .stream()
+                .sorted()
+                .map(key -> key + "=" + map.get(key))
+                .collect(Collectors.joining(", ", "{", "}"));
+    }
 }
