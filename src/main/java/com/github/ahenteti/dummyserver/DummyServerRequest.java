@@ -24,7 +24,7 @@ public class DummyServerRequest {
     private Map<String, ValueExpectation> queries = new HashMap<>();
     private Map<String, ValueExpectation> headers = new HashMap<>();
 
-    public boolean equalsTo(HttpServletRequest request) {
+    public boolean matches(HttpServletRequest request) {
         if (!request.getRequestURI().matches(path)) return false;
         if (!StringUtils.equalsIgnoreCase(method, request.getMethod())) return false;
         for (Map.Entry<String, ValueExpectation> query : queries.entrySet()) {

@@ -22,6 +22,11 @@ public class DummyServerController {
         this.store.add(request);
     }
 
+    @PostMapping("/dummy-response-list")
+    public void addDummyResponseList(@RequestBody List<DummyServerRequestResponsePair> requests) {
+        requests.forEach(this::addDummyResponse);
+    }
+
     @RequestMapping("/**")
     public ResponseEntity<?> getDummyResponse(HttpServletRequest request) {
         List<DummyServerRequestResponsePair> requestResponsePairList = store.find(request);

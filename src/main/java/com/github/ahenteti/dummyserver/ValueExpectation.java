@@ -1,7 +1,9 @@
 package com.github.ahenteti.dummyserver;
 
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
+@Data
 public class ValueExpectation {
     private String equalsTo;
     private String contains;

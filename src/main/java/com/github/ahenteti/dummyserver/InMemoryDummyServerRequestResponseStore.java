@@ -22,7 +22,7 @@ public class InMemoryDummyServerRequestResponseStore implements IDummyServerRequ
     public List<DummyServerRequestResponsePair> find(HttpServletRequest servletRequest) {
         List<DummyServerRequestResponsePair> res = new ArrayList<>();
         for (DummyServerRequestResponsePair requestResponsePair : requestResponseList) {
-            if (requestResponsePair.getRequest().equalsTo(servletRequest)) {
+            if (requestResponsePair.getRequest().matches(servletRequest)) {
                 res.add(requestResponsePair);
             }
         }
