@@ -48,6 +48,11 @@ public class InMemoryDummyServerRequestResponseStore implements IDummyServerRequ
     }
 
     @Override
+    public boolean remove(DummyServerRequestResponsePair requestResponse) {
+        return requestResponseList.remove(requestResponse);
+    }
+
+    @Override
     public List<DummyServerRequestResponsePair> find(HttpServletRequest servletRequest) {
         List<DummyServerRequestResponsePair> res = new ArrayList<>();
         for (DummyServerRequestResponsePair requestResponsePair : requestResponseList) {
