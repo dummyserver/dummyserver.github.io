@@ -6,7 +6,6 @@ import java.util.Map;
 
 public class Expectation {
 
-    private static final String EQUALS_TO_EXPECTATION = "equalsTo";
     private static final String CONTAINS_EXPECTATION = "contains";
     private static final String ABSENT_EXPECTATION = "absent";
 
@@ -20,12 +19,7 @@ public class Expectation {
         }
         if (expectation instanceof Map) {
             Map expectationMap = (Map) expectation;
-            Object expectationValue = expectationMap.get(EQUALS_TO_EXPECTATION);
-            if (expectationValue instanceof String) {
-                return StringUtils.equalsIgnoreCase(value, (String) expectationValue);
-            }
-
-            expectationValue = expectationMap.get(CONTAINS_EXPECTATION);
+            Object expectationValue = expectationMap.get(CONTAINS_EXPECTATION);
             if (expectationValue instanceof String) {
                 return StringUtils.containsIgnoreCase(value, (String) expectationValue);
             }
