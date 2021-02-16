@@ -13,27 +13,27 @@ import java.util.Comparator;
 import java.util.List;
 
 @RestController
-public class DummyServerController {
+public class DummyServerRestController {
 
     @Autowired
     private IDummyServerRequestResponseStore store;
 
-    @PostMapping("/dummy-response")
+    @PostMapping("/api/dummy-response")
     public void addDummyResponse(@RequestBody DummyServerRequestResponsePair request) {
         this.store.add(request);
     }
 
-    @PostMapping("/dummy-response-list")
+    @PostMapping("/api/dummy-response-list")
     public void addDummyResponseList(@RequestBody List<DummyServerRequestResponsePair> requests) {
         requests.forEach(this::addDummyResponse);
     }
 
-    @DeleteMapping("/dummy-response")
+    @DeleteMapping("/api/dummy-response")
     public void removeDummyResponse(@RequestBody DummyServerRequestResponsePair request) {
         this.store.remove(request);
     }
 
-    @RequestMapping("/**")
+    @RequestMapping("/api/**")
     public ResponseEntity<?> getDummyResponse(HttpServletRequest request) {
         List<DummyServerRequestResponsePair> requestResponsePairList = store.find(request);
         if (requestResponsePairList.isEmpty()) {

@@ -3,7 +3,7 @@
 		"description": "GET Alex user",
 		"request": {
 			"method": "GET",
-			"path": "/user",
+			"path": "/api/user",
 			"headers": {
 				"User-Id": {
 					"equalsTo": "1"
@@ -26,7 +26,7 @@
 		"description": "GET Bob user",
 		"request": {
 			"method": "GET",
-			"path": "/user",
+			"path": "/api/user",
 			"headers": {
 				"User-Id": "2"
 			}

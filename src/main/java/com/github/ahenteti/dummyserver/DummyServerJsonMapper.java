@@ -7,9 +7,9 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomJsonMapper extends JsonMapper {
+public class DummyServerJsonMapper extends JsonMapper {
 
-    public CustomJsonMapper() {
+    public DummyServerJsonMapper() {
         super();
         this.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         this.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
