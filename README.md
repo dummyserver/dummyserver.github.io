@@ -1,6 +1,6 @@
 ## Dummy Server
 
-A tool for mocking HTTP services inspired from [WireMock](https://github.com/tomakehurst/wiremock)
+A tool for mocking HTTP services
 
 ### Features
 - Add dummy responses based on the request
