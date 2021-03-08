@@ -1,6 +1,7 @@
 ## Dummy Server
 
-A tool for mocking HTTP services inspired from [WireMock](https://github.com/tomakehurst/wiremock)
+A tool for mocking HTTP services inspired from [WireMock](https://github.com/tomakehurst/wiremock) 
+and I have added this project to test my Java skills and see if I was able to implement such a server by myself :)
 
 ### Features
 - Add dummy responses based on the request
