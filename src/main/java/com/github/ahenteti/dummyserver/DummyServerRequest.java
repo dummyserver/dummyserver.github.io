@@ -25,13 +25,13 @@ public class DummyServerRequest {
             String queryName = query.getKey();
             String queryValue = request.getParameter(queryName);
             Object expectation = query.getValue();
-            if (Expectation.valueNotAsExpected(queryValue, expectation)) return false;
+            if (Values.isNotAsExpected(queryValue, expectation)) return false;
         }
         for (Map.Entry<String, Object> header : headers.entrySet()) {
             String headerName = header.getKey();
             String headerValue = request.getHeader(headerName);
             Object expectation = header.getValue();
-            if (Expectation.valueNotAsExpected(headerValue, expectation)) return false;
+            if (Values.isNotAsExpected(headerValue, expectation)) return false;
         }
         return true;
     }

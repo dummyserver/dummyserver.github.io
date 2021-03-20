@@ -4,16 +4,20 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 
-public class Expectation {
+public class Values {
+
+    private Values() {
+        throw new IllegalStateException("Utility class and not designed to be instantiated");
+    }
 
     private static final String CONTAINS_EXPECTATION = "contains";
     private static final String ABSENT_EXPECTATION = "absent";
 
-    public static boolean valueNotAsExpected(String value, Object expectation) {
-        return !valueAsExpected(value, expectation);
+    public static boolean isNotAsExpected(String value, Object expectation) {
+        return !isAsExpected(value, expectation);
     }
 
-    public static boolean valueAsExpected(String value, Object expectation) {
+    public static boolean isAsExpected(String value, Object expectation) {
         if (expectation instanceof String) {
             return StringUtils.equalsIgnoreCase((String) expectation, value);
         }
