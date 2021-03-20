@@ -26,13 +26,13 @@ public class DummyServerResponse {
         sleepSilently();
         ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.status(this.status);
         headers.forEach(responseBuilder::header);
-        if (body != null) {
-            if (body instanceof TextNode) {
-                return responseBuilder.body(body.asText());
-            }
-            return responseBuilder.body(body);
+        if (body == null) {
+            return responseBuilder.build();
         }
-        return responseBuilder.build();
+        if (body instanceof TextNode) {
+            return responseBuilder.body(body.asText());
+        }
+        return responseBuilder.body(body);
     }
 
     private void sleepSilently() {
