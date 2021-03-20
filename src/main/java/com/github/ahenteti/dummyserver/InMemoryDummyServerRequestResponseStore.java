@@ -67,4 +67,9 @@ public class InMemoryDummyServerRequestResponseStore implements IDummyServerRequ
     public Set<DummyServerRequestResponsePair> getAll() {
         return requestResponseList;
     }
+
+    @Override
+    public void clear() {
+        requestResponseList.clear();
+    }
 }

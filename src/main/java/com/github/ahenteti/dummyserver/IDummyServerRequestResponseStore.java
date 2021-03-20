@@ -12,4 +12,6 @@ public interface IDummyServerRequestResponseStore {
     List<DummyServerRequestResponsePair> find(HttpServletRequest request);
 
     Set<DummyServerRequestResponsePair> getAll();
+
+    void clear();
 }

@@ -20,14 +20,19 @@ public class DummyServerRestController {
     @Autowired
     private IDummyServerRequestResponseStore store;
 
-    @GetMapping("/api/dummy-response-list")
-    public Set<DummyServerRequestResponsePair> getDummyResponseList() {
-        return this.store.getAll();
-    }
-    
     @PostMapping("/api/dummy-response")
     public void addDummyResponse(@RequestBody DummyServerRequestResponsePair request) {
         this.store.add(request);
+    }
+
+    @DeleteMapping("/api/dummy-response")
+    public void removeDummyResponse(@RequestBody DummyServerRequestResponsePair request) {
+        this.store.remove(request);
+    }
+
+    @GetMapping("/api/dummy-response-list")
+    public Set<DummyServerRequestResponsePair> getDummyResponseList() {
+        return this.store.getAll();
     }
 
     @PostMapping("/api/dummy-response-list")
@@ -35,9 +40,9 @@ public class DummyServerRestController {
         requests.forEach(this::addDummyResponse);
     }
 
-    @DeleteMapping("/api/dummy-response")
-    public void removeDummyResponse(@RequestBody DummyServerRequestResponsePair request) {
-        this.store.remove(request);
+    @DeleteMapping("/api/dummy-response-list")
+    public void removeDummyResponseList() {
+        this.store.clear();
     }
 
     @RequestMapping("/api/**")
