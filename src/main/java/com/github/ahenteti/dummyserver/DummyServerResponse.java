@@ -20,7 +20,7 @@ public class DummyServerResponse {
     private Integer status;
     private Map<String, String> headers = new HashMap<>();
     private JsonNode body;
-    private Integer delayInMillis;
+    private Integer delayInMillis = 0;
 
     public ResponseEntity<?> toResponseEntity() {
         sleepSilently();
@@ -36,6 +36,7 @@ public class DummyServerResponse {
     }
 
     private void sleepSilently() {
+        if (delayInMillis <= 0) return;
         try {
             Thread.sleep(delayInMillis);
         } catch (Exception e) {

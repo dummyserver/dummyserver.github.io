@@ -62,4 +62,9 @@ public class InMemoryDummyServerRequestResponseStore implements IDummyServerRequ
         }
         return res;
     }
+
+    @Override
+    public Set<DummyServerRequestResponsePair> getAll() {
+        return requestResponseList;
+    }
 }
