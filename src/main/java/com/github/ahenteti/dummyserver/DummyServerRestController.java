@@ -17,8 +17,13 @@ import java.util.Set;
 @RestController
 public class DummyServerRestController {
 
+    public static final int FIRST_RESPONSE = 0;
+
     @Autowired
     private IDummyServerRequestResponseStore store;
+
+    @Autowired
+    private IDummyServerResponseConverter converter;
 
     @PostMapping("/api/dummy-response")
     public void addDummyResponse(@RequestBody DummyServerRequestResponsePair request) {
@@ -52,6 +57,7 @@ public class DummyServerRestController {
             return ResponseEntity.notFound().build();
         }
         requestResponsePairList.sort(Comparator.comparing(DummyServerRequestResponsePair::getPriority));
-        return requestResponsePairList.get(0).getResponse().toResponseEntity();
+        DummyServerResponse response = requestResponsePairList.get(FIRST_RESPONSE).getResponse();
+        return converter.toResponseEntity(response);
     }
 }
