@@ -86,6 +86,7 @@ The DummyServer exposes 2 APIs to add more dummy responses:
            "path": "/v1/users"
        },
        "response": {
+           "delayInMillis": 1000,
            "status": 200,
            "headers": {
                "Content-Type": "application/json"
@@ -110,6 +111,7 @@ The DummyServer exposes 2 APIs to add more dummy responses:
            "path": "/v1/users"
        },
        "response": {
+           "delayInMillis": 10000,
            "status": 200,
            "headers": {
                "Content-Type": "application/json"
