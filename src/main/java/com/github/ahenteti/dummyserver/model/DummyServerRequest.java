@@ -1,5 +1,6 @@
-package com.github.ahenteti.dummyserver;
+package com.github.ahenteti.dummyserver.model;
 
+import com.github.ahenteti.dummyserver.service.impl.ValueUtils;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,13 +26,13 @@ public class DummyServerRequest {
             String queryName = query.getKey();
             String queryValue = request.getParameter(queryName);
             Object expectation = query.getValue();
-            if (Values.isNotAsExpected(queryValue, expectation)) return false;
+            if (ValueUtils.isNotAsExpected(queryValue, expectation)) return false;
         }
         for (Map.Entry<String, Object> header : headers.entrySet()) {
             String headerName = header.getKey();
             String headerValue = request.getHeader(headerName);
             Object expectation = header.getValue();
-            if (Values.isNotAsExpected(headerValue, expectation)) return false;
+            if (ValueUtils.isNotAsExpected(headerValue, expectation)) return false;
         }
         return true;
     }

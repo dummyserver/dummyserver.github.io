@@ -1,4 +1,4 @@
-package com.github.ahenteti.dummyserver;
+package com.github.ahenteti.dummyserver.service.impl;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;

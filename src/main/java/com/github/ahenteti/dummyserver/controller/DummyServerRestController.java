@@ -1,5 +1,9 @@
-package com.github.ahenteti.dummyserver;
+package com.github.ahenteti.dummyserver.controller;
 
+import com.github.ahenteti.dummyserver.model.DummyServerRequestResponsePair;
+import com.github.ahenteti.dummyserver.model.DummyServerResponse;
+import com.github.ahenteti.dummyserver.service.IDummyServerRequestResponseStore;
+import com.github.ahenteti.dummyserver.service.IDummyServerResponseConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

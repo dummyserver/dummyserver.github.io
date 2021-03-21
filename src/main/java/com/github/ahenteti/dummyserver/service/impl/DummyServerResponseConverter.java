@@ -1,7 +1,9 @@
-package com.github.ahenteti.dummyserver;
+package com.github.ahenteti.dummyserver.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.TextNode;
+import com.github.ahenteti.dummyserver.model.DummyServerResponse;
+import com.github.ahenteti.dummyserver.service.IDummyServerResponseBodyFormatter;
+import com.github.ahenteti.dummyserver.service.IDummyServerResponseConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

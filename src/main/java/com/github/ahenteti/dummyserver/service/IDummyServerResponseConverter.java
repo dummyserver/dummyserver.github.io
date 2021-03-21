@@ -1,5 +1,6 @@
-package com.github.ahenteti.dummyserver;
+package com.github.ahenteti.dummyserver.service;
 
+import com.github.ahenteti.dummyserver.model.DummyServerResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface IDummyServerResponseConverter {

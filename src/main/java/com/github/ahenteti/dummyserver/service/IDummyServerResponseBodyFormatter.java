@@ -1,4 +1,4 @@
-package com.github.ahenteti.dummyserver;
+package com.github.ahenteti.dummyserver.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 

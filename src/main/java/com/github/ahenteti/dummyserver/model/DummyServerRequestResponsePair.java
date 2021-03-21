@@ -1,4 +1,4 @@
-package com.github.ahenteti.dummyserver;
+package com.github.ahenteti.dummyserver.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

@@ -1,4 +1,6 @@
-package com.github.ahenteti.dummyserver;
+package com.github.ahenteti.dummyserver.service;
+
+import com.github.ahenteti.dummyserver.model.DummyServerRequestResponsePair;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

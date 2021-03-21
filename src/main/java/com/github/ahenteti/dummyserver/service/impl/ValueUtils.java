@@ -1,12 +1,12 @@
-package com.github.ahenteti.dummyserver;
+package com.github.ahenteti.dummyserver.service.impl;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 
-public class Values {
+public class ValueUtils {
 
-    private Values() {
+    private ValueUtils() {
         throw new IllegalStateException("Utility class and not designed to be instantiated");
     }
 
