@@ -1,19 +1,20 @@
 package com.github.ahenteti.dummyserver;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.TextNode;
-import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-
+@Service
 public class DummyServerResponseConverter implements IDummyServerResponseConverter {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(DummyServerResponseConverter.class);
+
+    @Autowired
+    private IDummyServerResponseBodyFormatter bodyFormatter;
 
     @Override
     public ResponseEntity<?> toResponseEntity(DummyServerResponse response) {
@@ -24,9 +25,9 @@ public class DummyServerResponseConverter implements IDummyServerResponseConvert
             return responseBuilder.build();
         }
         if (response.getBody() instanceof TextNode) {
-            return responseBuilder.body(response.getBody().asText());
+            return responseBuilder.body(bodyFormatter.format(response.getBody().asText()));
         }
-        return responseBuilder.body(response.getBody());
+        return responseBuilder.body(bodyFormatter.format(response.getBody()));
     }
 
     private void sleepSilently(DummyServerResponse response) {
