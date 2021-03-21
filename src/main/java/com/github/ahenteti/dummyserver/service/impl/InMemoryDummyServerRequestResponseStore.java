@@ -2,6 +2,7 @@ package com.github.ahenteti.dummyserver.service.impl;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.ahenteti.dummyserver.model.DummyServerRequestResponsePair;
+import com.github.ahenteti.dummyserver.service.IDummyServerRequestComparator;
 import com.github.ahenteti.dummyserver.service.IDummyServerRequestResponseStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,9 @@ public class InMemoryDummyServerRequestResponseStore implements IDummyServerRequ
 
     @Autowired
     private JsonMapper jsonMapper;
+    
+    @Autowired
+    private IDummyServerRequestComparator requestComparator;
 
     @PostConstruct
     public void init() {
@@ -58,7 +62,7 @@ public class InMemoryDummyServerRequestResponseStore implements IDummyServerRequ
     public List<DummyServerRequestResponsePair> find(HttpServletRequest servletRequest) {
         List<DummyServerRequestResponsePair> res = new ArrayList<>();
         for (DummyServerRequestResponsePair requestResponsePair : requestResponseList) {
-            if (requestResponsePair.getRequest().matches(servletRequest)) {
+            if (requestComparator.equals(requestResponsePair.getRequest(), servletRequest)) {
                 res.add(requestResponsePair);
             }
         }
