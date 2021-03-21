@@ -11,7 +11,7 @@ public interface IDummyServerRequestResponseStore {
     
     boolean remove(DummyServerRequestResponsePair requestResponse);
 
-    List<DummyServerRequestResponsePair> find(HttpServletRequest request);
+    List<DummyServerRequestResponsePair> getByHttpRequest(HttpServletRequest request);
 
     Set<DummyServerRequestResponsePair> getAll();
 

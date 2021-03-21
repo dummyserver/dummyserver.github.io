@@ -59,7 +59,7 @@ public class InMemoryDummyServerRequestResponseStore implements IDummyServerRequ
     }
 
     @Override
-    public List<DummyServerRequestResponsePair> find(HttpServletRequest servletRequest) {
+    public List<DummyServerRequestResponsePair> getByHttpRequest(HttpServletRequest servletRequest) {
         List<DummyServerRequestResponsePair> res = new ArrayList<>();
         for (DummyServerRequestResponsePair requestResponsePair : requestResponseList) {
             if (requestComparator.equals(requestResponsePair.getRequest(), servletRequest)) {

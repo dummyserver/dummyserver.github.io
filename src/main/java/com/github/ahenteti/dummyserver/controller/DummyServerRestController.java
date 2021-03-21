@@ -56,7 +56,7 @@ public class DummyServerRestController {
 
     @RequestMapping("/api/**")
     public ResponseEntity<?> getDummyResponse(HttpServletRequest request) {
-        List<DummyServerRequestResponsePair> requestResponsePairList = store.find(request);
+        List<DummyServerRequestResponsePair> requestResponsePairList = store.getByHttpRequest(request);
         if (requestResponsePairList.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
