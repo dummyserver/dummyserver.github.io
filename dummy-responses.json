@@ -35,7 +35,7 @@
     },
     "body" : [ {
       "name" : "{{now}}",
-      "value" : "{{randomValue}}"
+      "value" : "{{randomValue --length=13 type='UUID'}}"
     } ],
     "delayInMillis" : 0
   }
