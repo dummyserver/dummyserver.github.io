@@ -14,5 +14,6 @@ public class DummyServerJsonMapper extends JsonMapper {
         this.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         this.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         this.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        this.enable(SerializationFeature.INDENT_OUTPUT);
     }
 }

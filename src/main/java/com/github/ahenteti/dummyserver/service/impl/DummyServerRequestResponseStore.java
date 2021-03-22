@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class InMemoryDummyServerRequestResponseStore implements IDummyServerRequestResponseStore {
+public class DummyServerRequestResponseStore implements IDummyServerRequestResponseStore {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryDummyServerRequestResponseStore.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DummyServerRequestResponseStore.class);
 
     private Set<DummyServerRequestResponsePair> requestResponseList = new HashSet<>();
 
@@ -48,12 +48,14 @@ public class InMemoryDummyServerRequestResponseStore implements IDummyServerRequ
     }
 
     @Override
+    @DumpStore
     public void add(DummyServerRequestResponsePair requestResponse) {
         requestResponseList.remove(requestResponse);
         requestResponseList.add(requestResponse);
     }
 
     @Override
+    @DumpStore
     public boolean remove(DummyServerRequestResponsePair requestResponse) {
         return requestResponseList.remove(requestResponse);
     }
@@ -75,6 +77,7 @@ public class InMemoryDummyServerRequestResponseStore implements IDummyServerRequ
     }
 
     @Override
+    @DumpStore
     public void clear() {
         requestResponseList.clear();
     }
