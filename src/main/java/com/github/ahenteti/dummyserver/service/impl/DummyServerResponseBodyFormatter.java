@@ -12,6 +12,9 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.github.ahenteti.dummyserver.service.impl.NowTemplateVariableConverter.NOW_REGEX;
+import static com.github.ahenteti.dummyserver.service.impl.RandomValueTemplateVariableConverter.RANDOM_VALUE_REGEX;
+
 @Service
 public class DummyServerResponseBodyFormatter implements IDummyServerResponseBodyFormatter {
 
@@ -22,8 +25,8 @@ public class DummyServerResponseBodyFormatter implements IDummyServerResponseBod
 
     @Override
     public String format(String template) {
-        String res = format(template, NowTemplateVariableConverter.REGEX, new NowTemplateVariableConverter());
-        res = format(res, RandomValueTemplateVariableConverter.REGEX, new RandomValueTemplateVariableConverter());
+        String res = format(template, NOW_REGEX, new NowTemplateVariableConverter());
+        res = format(res, RANDOM_VALUE_REGEX, new RandomValueTemplateVariableConverter());
         return res;
     }
 
@@ -39,18 +42,23 @@ public class DummyServerResponseBodyFormatter implements IDummyServerResponseBod
     }
 
     private String format(String template, String regex, Function<Matcher, String> converter) {
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(template);
-        int lastIndex = 0;
-        StringBuilder output = new StringBuilder();
-        while (matcher.find()) {
-            output.append(template, lastIndex, matcher.start()).append(converter.apply(matcher));
-            lastIndex = matcher.end();
+        try {
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(template);
+            int lastIndex = 0;
+            StringBuilder output = new StringBuilder();
+            while (matcher.find()) {
+                output.append(template, lastIndex, matcher.start()).append(converter.apply(matcher));
+                lastIndex = matcher.end();
+            }
+            if (lastIndex < template.length()) {
+                output.append(template, lastIndex, template.length());
+            }
+            return output.toString();
+        } catch (Exception e) {
+            LOGGER.error("error while formatting body. we return the template without formatting", e);
+            return template;
         }
-        if (lastIndex < template.length()) {
-            output.append(template, lastIndex, template.length());
-        }
-        return output.toString();
     }
 
 }

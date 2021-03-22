@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 public class RandomValueTemplateVariableConverter implements Function<Matcher, String> {
 
     public static final String OPTIONS_GROUP_NAME = "options";
-    public static final String REGEX = String.format("\\{\\{randomValue(?<%s>.*?)}}", OPTIONS_GROUP_NAME);
+    public static final String RANDOM_VALUE_REGEX = String.format("\\{\\{randomValue(?<%s>.*?)}}", OPTIONS_GROUP_NAME);
     public static final int RANDOM_VALUE_DEFAULT_LENGTH = 10;
     public static final String RANDOM_VALUE_DEFAULT_TYPE = "ALPHANUMERIC";
 

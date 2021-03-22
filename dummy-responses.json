@@ -34,8 +34,10 @@
       "Content-Type" : "application/json"
     },
     "body" : [ {
-      "name" : "{{now}}",
-      "value" : "{{randomValue --length=13 type='UUID'}}"
+      "now1" : "{{now}}",
+      "now2" : "{{now +4d}}",
+      "now3" : "{{now -1y}}",
+      "value" : "{{randomValue --length=13 --type='UUID'}}"
     } ],
     "delayInMillis" : 0
   }
