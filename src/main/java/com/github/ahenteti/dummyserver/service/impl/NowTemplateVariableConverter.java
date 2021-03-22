@@ -47,7 +47,7 @@ public class NowTemplateVariableConverter implements Function<Matcher, String> {
     }
 
     private ZoneId getDateTimeZoneId(String options) {
-        Pattern pattern = Pattern.compile("--zoneId='(.+?)");
+        Pattern pattern = Pattern.compile("--zoneId='(.+?)'");
         Matcher matcher = pattern.matcher(options);
         if (matcher.find()) {
             String zoneIdString = matcher.group(1);
@@ -62,7 +62,7 @@ public class NowTemplateVariableConverter implements Function<Matcher, String> {
     }
 
     private DateTimeFormatter getDateTimeFormatter(String options) {
-        Pattern pattern = Pattern.compile("--format='(.+?)");
+        Pattern pattern = Pattern.compile("--format='(.+?)'");
         Matcher matcher = pattern.matcher(options);
         if (matcher.find()) {
             String format = matcher.group(1);
