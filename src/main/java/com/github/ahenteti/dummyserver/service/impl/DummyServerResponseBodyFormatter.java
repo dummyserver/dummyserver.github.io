@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,19 +22,9 @@ public class DummyServerResponseBodyFormatter implements IDummyServerResponseBod
 
     @Override
     public String format(String template) {
-        String res = template;
-        Pattern pattern = Pattern.compile("\\{\\{now(?<options>.*)}}");
-        Matcher matcher = pattern.matcher(template);
-        int lastIndex = 0;
-        StringBuilder output = new StringBuilder();
-        while (matcher.find()) {
-            output.append(res, lastIndex, matcher.start()).append(Instant.now().toString());
-            lastIndex = matcher.end();
-        }
-        if (lastIndex < res.length()) {
-            output.append(res, lastIndex, res.length());
-        }
-        return output.toString();
+        String res = format(template, NowConverter.REGEX, new NowConverter());
+        res = format(res, RandomValueConverter.REGEX, new RandomValueConverter());
+        return res;
     }
 
     @Override
@@ -48,5 +38,19 @@ public class DummyServerResponseBodyFormatter implements IDummyServerResponseBod
         }
     }
 
+    private String format(String template, String regex, Function<Matcher, String> converter) {
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(template);
+        int lastIndex = 0;
+        StringBuilder output = new StringBuilder();
+        while (matcher.find()) {
+            output.append(template, lastIndex, matcher.start()).append(converter.apply(matcher));
+            lastIndex = matcher.end();
+        }
+        if (lastIndex < template.length()) {
+            output.append(template, lastIndex, template.length());
+        }
+        return output.toString();
+    }
 
 }
