@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 
-public class NowConverter implements Function<Matcher, String> {
+public class NowTemplateVariableConverter implements Function<Matcher, String> {
 
     public static final String REGEX = "\\{\\{now(?<options>.*?)}}";
 

@@ -22,8 +22,8 @@ public class DummyServerResponseBodyFormatter implements IDummyServerResponseBod
 
     @Override
     public String format(String template) {
-        String res = format(template, NowConverter.REGEX, new NowConverter());
-        res = format(res, RandomValueConverter.REGEX, new RandomValueConverter());
+        String res = format(template, NowTemplateVariableConverter.REGEX, new NowTemplateVariableConverter());
+        res = format(res, RandomValueTemplateVariableConverter.REGEX, new RandomValueTemplateVariableConverter());
         return res;
     }
 

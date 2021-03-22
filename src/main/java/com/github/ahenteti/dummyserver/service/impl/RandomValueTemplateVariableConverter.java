@@ -4,7 +4,7 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 
-public class RandomValueConverter implements Function<Matcher, String> {
+public class RandomValueTemplateVariableConverter implements Function<Matcher, String> {
 
     public static final String REGEX = "\\{\\{randomValue(?<options>.*?)}}";
 
