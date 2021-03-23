@@ -34,8 +34,7 @@
       "Content-Type" : "application/json"
     },
     "body" : [ {
-      "now" : "{{now -1y --format='yyyy-MM-dd HH:mm:ss' --zoneId='-0200'}}",
-      "value" : "{{randomValue --length=13 --type='UUID'}}"
+      "oneOf" : "{{oneOf 11 32 }}"
     } ],
     "delayInMillis" : 0
   }

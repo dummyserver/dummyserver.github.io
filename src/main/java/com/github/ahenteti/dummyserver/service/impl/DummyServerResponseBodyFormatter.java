@@ -13,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.github.ahenteti.dummyserver.service.impl.NowTemplateVariableConverter.NOW_REGEX;
+import static com.github.ahenteti.dummyserver.service.impl.OneOfTemplateVariableConverter.ONE_OF_REGEX;
 import static com.github.ahenteti.dummyserver.service.impl.RandomValueTemplateVariableConverter.RANDOM_VALUE_REGEX;
 
 @Service
@@ -27,6 +28,7 @@ public class DummyServerResponseBodyFormatter implements IDummyServerResponseBod
     public String format(String template) {
         String res = format(template, NOW_REGEX, new NowTemplateVariableConverter());
         res = format(res, RANDOM_VALUE_REGEX, new RandomValueTemplateVariableConverter());
+        res = format(res, ONE_OF_REGEX, new OneOfTemplateVariableConverter());
         return res;
     }
 
