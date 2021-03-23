@@ -12,6 +12,7 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.github.ahenteti.dummyserver.service.impl.HostnameTemplateVariableConverter.HOSTNAME_REGEX;
 import static com.github.ahenteti.dummyserver.service.impl.NowTemplateVariableConverter.NOW_REGEX;
 import static com.github.ahenteti.dummyserver.service.impl.OneOfTemplateVariableConverter.ONE_OF_REGEX;
 import static com.github.ahenteti.dummyserver.service.impl.RandomValueTemplateVariableConverter.RANDOM_VALUE_REGEX;
@@ -29,6 +30,7 @@ public class DummyServerResponseBodyFormatter implements IDummyServerResponseBod
         String res = format(template, NOW_REGEX, new NowTemplateVariableConverter());
         res = format(res, RANDOM_VALUE_REGEX, new RandomValueTemplateVariableConverter());
         res = format(res, ONE_OF_REGEX, new OneOfTemplateVariableConverter());
+        res = format(res, HOSTNAME_REGEX, new HostnameTemplateVariableConverter());
         return res;
     }
 

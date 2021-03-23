@@ -34,7 +34,7 @@
       "Content-Type" : "application/json"
     },
     "body" : [ {
-      "oneOf" : "{{oneOf 11 32 }}"
+      "hostname" : "{{hostname}}"
     } ],
     "delayInMillis" : 0
   }
