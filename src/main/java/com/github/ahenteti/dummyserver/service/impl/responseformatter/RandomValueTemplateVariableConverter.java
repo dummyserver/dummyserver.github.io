@@ -1,4 +1,4 @@
-package com.github.ahenteti.dummyserver.service.impl;
+package com.github.ahenteti.dummyserver.service.impl.responseformatter;
 
 import org.apache.commons.lang3.RandomStringUtils;
 

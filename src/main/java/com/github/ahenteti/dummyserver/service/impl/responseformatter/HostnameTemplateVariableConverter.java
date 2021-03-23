@@ -1,4 +1,4 @@
-package com.github.ahenteti.dummyserver.service.impl;
+package com.github.ahenteti.dummyserver.service.impl.responseformatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

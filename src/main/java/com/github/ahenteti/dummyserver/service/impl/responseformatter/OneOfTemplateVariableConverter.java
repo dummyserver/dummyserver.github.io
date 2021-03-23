@@ -1,4 +1,4 @@
-package com.github.ahenteti.dummyserver.service.impl;
+package com.github.ahenteti.dummyserver.service.impl.responseformatter;
 
 import java.util.ArrayList;
 import java.util.List;

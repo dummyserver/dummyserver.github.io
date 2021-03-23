@@ -1,4 +1,4 @@
-package com.github.ahenteti.dummyserver.service.impl;
+package com.github.ahenteti.dummyserver.service.impl.responseformatter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -12,10 +12,10 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.github.ahenteti.dummyserver.service.impl.HostnameTemplateVariableConverter.HOSTNAME_REGEX;
-import static com.github.ahenteti.dummyserver.service.impl.NowTemplateVariableConverter.NOW_REGEX;
-import static com.github.ahenteti.dummyserver.service.impl.OneOfTemplateVariableConverter.ONE_OF_REGEX;
-import static com.github.ahenteti.dummyserver.service.impl.RandomValueTemplateVariableConverter.RANDOM_VALUE_REGEX;
+import static com.github.ahenteti.dummyserver.service.impl.responseformatter.HostnameTemplateVariableConverter.HOSTNAME_REGEX;
+import static com.github.ahenteti.dummyserver.service.impl.responseformatter.NowTemplateVariableConverter.NOW_REGEX;
+import static com.github.ahenteti.dummyserver.service.impl.responseformatter.OneOfTemplateVariableConverter.ONE_OF_REGEX;
+import static com.github.ahenteti.dummyserver.service.impl.responseformatter.RandomValueTemplateVariableConverter.RANDOM_VALUE_REGEX;
 
 @Service
 public class DummyServerResponseBodyFormatter implements IDummyServerResponseBodyFormatter {
