@@ -31,8 +31,12 @@ public class DummyServerRequestResponseStoreDumper {
     @Value("${dummy.responses.file}")
     private String dummyResponsesFile;
 
+    @Value("${autodump.dummy.responses.file}")
+    private boolean autoDump;
+
     @After("@annotation(com.github.ahenteti.dummyserver.service.impl.DumpStore)")
     public void dumpStore(JoinPoint joinPoint) {
+        if (!autoDump) return;
         try {
             Path dummyResponsesFilePath = Paths.get(dummyResponsesFile);
             createFileIfNotExists(dummyResponsesFilePath);
