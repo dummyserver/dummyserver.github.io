@@ -1,26 +1,31 @@
 package com.github.ahenteti.dummyserver.service.impl.responseformatter;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.UUID;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RandomValueTemplateVariableConverter implements Function<Matcher, String> {
+public class RandomValueTemplateVariableConverter extends BaseTemplateVariableConverter {
 
-    public static final String OPTIONS_GROUP_NAME = "options";
-    public static final String RANDOM_VALUE_REGEX = String.format("\\{\\{randomValue(?<%s>.*?)}}", OPTIONS_GROUP_NAME);
     public static final int RANDOM_VALUE_DEFAULT_LENGTH = 10;
     public static final String RANDOM_VALUE_DEFAULT_TYPE = "ALPHANUMERIC";
 
     @Override
-    public String apply(Matcher matcher) {
-        String options = matcher.group(OPTIONS_GROUP_NAME);
-        int length = getLength(options);
-        String type = getType(options);
-        boolean uppercase = getUppercase(options);
-        boolean lowercase = getLowercase(options);
+    public boolean canConvert(String templateVariableName, String templateVariableOptions) {
+        return StringUtils.equalsIgnoreCase("randomValue", templateVariableName);
+    }
+
+    @Override
+    public String convert(String templateVariableName, String templateVariableOptions) {
+        if (!canConvert(templateVariableName, templateVariableOptions)) {
+            return super.convert(templateVariableName, templateVariableOptions);
+        }
+        int length = getLength(templateVariableOptions);
+        String type = getType(templateVariableOptions);
+        boolean uppercase = getUppercase(templateVariableOptions);
+        boolean lowercase = getLowercase(templateVariableOptions);
 
         String rawValue;
         switch (type) {

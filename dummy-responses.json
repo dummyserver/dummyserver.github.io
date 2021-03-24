@@ -34,6 +34,9 @@
       "Content-Type" : "application/json"
     },
     "body" : [ {
+      "now" : "{{now}}",
+      "randomValue" : "{{randomValue}}",
+      "oneOf" : "{{oneOf 12 22}}",
       "hostname" : "{{hostname}}"
     } ],
     "delayInMillis" : 0

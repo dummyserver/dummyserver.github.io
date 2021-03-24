@@ -1,13 +1,12 @@
 package com.github.ahenteti.dummyserver.service.impl.responseformatter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
-import java.util.function.Function;
-import java.util.regex.Matcher;
 
-public class HostnameTemplateVariableConverter implements Function<Matcher, String> {
+public class HostnameTemplateVariableConverter extends BaseTemplateVariableConverter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HostnameTemplateVariableConverter.class);
 
@@ -17,10 +16,16 @@ public class HostnameTemplateVariableConverter implements Function<Matcher, Stri
         setHostname();
     }
 
-    public static final String HOSTNAME_REGEX = "\\{\\{hostname}}";
+    @Override
+    public boolean canConvert(String templateVariableName, String templateVariableOptions) {
+        return StringUtils.equalsIgnoreCase("hostname", templateVariableName);
+    }
 
     @Override
-    public String apply(Matcher matcher) {
+    public String convert(String templateVariableName, String templateVariableOptions) {
+        if (!canConvert(templateVariableName, templateVariableOptions)) {
+            return super.convert(templateVariableName, templateVariableOptions);
+        }
         return HOSTNAME;
     }
 
@@ -32,5 +37,4 @@ public class HostnameTemplateVariableConverter implements Function<Matcher, Stri
             HOSTNAME = "localhost";
         }
     }
-
 }

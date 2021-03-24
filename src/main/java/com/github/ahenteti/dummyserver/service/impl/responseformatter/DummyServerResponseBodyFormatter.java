@@ -8,14 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.github.ahenteti.dummyserver.service.impl.responseformatter.HostnameTemplateVariableConverter.HOSTNAME_REGEX;
-import static com.github.ahenteti.dummyserver.service.impl.responseformatter.NowTemplateVariableConverter.NOW_REGEX;
-import static com.github.ahenteti.dummyserver.service.impl.responseformatter.OneOfTemplateVariableConverter.ONE_OF_REGEX;
-import static com.github.ahenteti.dummyserver.service.impl.responseformatter.RandomValueTemplateVariableConverter.RANDOM_VALUE_REGEX;
 
 @Service
 public class DummyServerResponseBodyFormatter implements IDummyServerResponseBodyFormatter {
@@ -25,13 +21,36 @@ public class DummyServerResponseBodyFormatter implements IDummyServerResponseBod
     @Autowired
     private JsonMapper mapper;
 
+    @Autowired
+    private TemplateVariableConverterChainFactory templateVariableConverterChainFactory;
+
+    private ITemplateVariableConverter templateVariableConverter;
+
+    @PostConstruct
+    public void init() {
+        this.templateVariableConverter = templateVariableConverterChainFactory.create();
+    }
+
     @Override
     public String format(String template) {
-        String res = format(template, NOW_REGEX, new NowTemplateVariableConverter());
-        res = format(res, RANDOM_VALUE_REGEX, new RandomValueTemplateVariableConverter());
-        res = format(res, ONE_OF_REGEX, new OneOfTemplateVariableConverter());
-        res = format(res, HOSTNAME_REGEX, new HostnameTemplateVariableConverter());
-        return res;
+        try {
+            Pattern pattern = Pattern.compile("\\{\\{([^\\s}]+)(.*?)}}");
+            Matcher matcher = pattern.matcher(template);
+            int lastIndex = 0;
+            StringBuilder output = new StringBuilder();
+            while (matcher.find()) {
+                output.append(template, lastIndex, matcher.start());
+                output.append(templateVariableConverter.convert(matcher.group(1), matcher.group(2)));
+                lastIndex = matcher.end();
+            }
+            if (lastIndex < template.length()) {
+                output.append(template, lastIndex, template.length());
+            }
+            return output.toString();
+        } catch (Exception e) {
+            LOGGER.error("error while formatting body. we return the template without formatting", e);
+            return template;
+        }
     }
 
     @Override
