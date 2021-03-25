@@ -33,14 +33,15 @@ public class DummyServerRequestResponseStore implements IDummyServerRequestRespo
 
     @Autowired
     private JsonMapper jsonMapper;
-    
+
     @Autowired
     private IDummyServerRequestComparator requestComparator;
 
     @PostConstruct
     public void init() {
         try (Reader reader = Files.newBufferedReader(Paths.get(dummyResponsesFile))) {
-            DummyServerRequestResponsePair[] dummyResponses = jsonMapper.readValue(reader, DummyServerRequestResponsePair[].class);
+            DummyServerRequestResponsePair[] dummyResponses = jsonMapper
+                    .readValue(reader, DummyServerRequestResponsePair[].class);
             Arrays.asList(dummyResponses).forEach(this::add);
         } catch (Exception e) {
             LOGGER.error("error while reading {}", dummyResponsesFile, e);

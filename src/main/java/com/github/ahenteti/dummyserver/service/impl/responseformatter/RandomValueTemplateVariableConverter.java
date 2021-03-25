@@ -1,7 +1,6 @@
 package com.github.ahenteti.dummyserver.service.impl.responseformatter;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -13,13 +12,13 @@ public class RandomValueTemplateVariableConverter extends BaseTemplateVariableCo
     public static final String RANDOM_VALUE_DEFAULT_TYPE = "ALPHANUMERIC";
 
     @Override
-    public boolean canConvert(String templateVariableName, String templateVariableOptions) {
-        return StringUtils.equalsIgnoreCase("randomValue", templateVariableName);
+    public String getTemplateVariableName() {
+        return "randomValue";
     }
 
     @Override
     public String convert(String templateVariableName, String templateVariableOptions) {
-        if (!canConvert(templateVariableName, templateVariableOptions)) {
+        if (cannotConvert(templateVariableName, templateVariableOptions)) {
             return super.convert(templateVariableName, templateVariableOptions);
         }
         int length = getLength(templateVariableOptions);

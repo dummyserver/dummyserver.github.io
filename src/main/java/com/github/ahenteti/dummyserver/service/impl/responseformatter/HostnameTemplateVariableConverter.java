@@ -1,6 +1,5 @@
 package com.github.ahenteti.dummyserver.service.impl.responseformatter;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,13 +16,13 @@ public class HostnameTemplateVariableConverter extends BaseTemplateVariableConve
     }
 
     @Override
-    public boolean canConvert(String templateVariableName, String templateVariableOptions) {
-        return StringUtils.equalsIgnoreCase("hostname", templateVariableName);
+    public String getTemplateVariableName() {
+        return "hostname";
     }
 
     @Override
     public String convert(String templateVariableName, String templateVariableOptions) {
-        if (!canConvert(templateVariableName, templateVariableOptions)) {
+        if (cannotConvert(templateVariableName, templateVariableOptions)) {
             return super.convert(templateVariableName, templateVariableOptions);
         }
         return HOSTNAME;

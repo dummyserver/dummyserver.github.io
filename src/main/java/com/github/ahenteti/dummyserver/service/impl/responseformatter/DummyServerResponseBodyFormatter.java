@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,13 +21,13 @@ public class DummyServerResponseBodyFormatter implements IDummyServerResponseBod
     private JsonMapper mapper;
 
     @Autowired
-    private TemplateVariableConverterChainFactory templateVariableConverterChainFactory;
+    private TemplateVariableConverterFactory templateVariableConverterFactory;
 
     private ITemplateVariableConverter templateVariableConverter;
 
     @PostConstruct
     public void init() {
-        this.templateVariableConverter = templateVariableConverterChainFactory.create();
+        this.templateVariableConverter = templateVariableConverterFactory.create();
     }
 
     @Override
@@ -36,8 +35,8 @@ public class DummyServerResponseBodyFormatter implements IDummyServerResponseBod
         try {
             Pattern pattern = Pattern.compile("\\{\\{([^\\s}]+)(.*?)}}");
             Matcher matcher = pattern.matcher(template);
-            int lastIndex = 0;
             StringBuilder output = new StringBuilder();
+            int lastIndex = 0;
             while (matcher.find()) {
                 output.append(template, lastIndex, matcher.start());
                 output.append(templateVariableConverter.convert(matcher.group(1), matcher.group(2)));
@@ -61,26 +60,6 @@ public class DummyServerResponseBodyFormatter implements IDummyServerResponseBod
         } catch (Exception e) {
             LOGGER.error("error while formatting body. we return the body without formatting", e);
             return body;
-        }
-    }
-
-    private String format(String template, String regex, Function<Matcher, String> converter) {
-        try {
-            Pattern pattern = Pattern.compile(regex);
-            Matcher matcher = pattern.matcher(template);
-            int lastIndex = 0;
-            StringBuilder output = new StringBuilder();
-            while (matcher.find()) {
-                output.append(template, lastIndex, matcher.start()).append(converter.apply(matcher));
-                lastIndex = matcher.end();
-            }
-            if (lastIndex < template.length()) {
-                output.append(template, lastIndex, template.length());
-            }
-            return output.toString();
-        } catch (Exception e) {
-            LOGGER.error("error while formatting body. we return the template without formatting", e);
-            return template;
         }
     }
 

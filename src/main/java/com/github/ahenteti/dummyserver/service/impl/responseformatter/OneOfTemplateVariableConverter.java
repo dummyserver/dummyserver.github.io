@@ -1,7 +1,5 @@
 package com.github.ahenteti.dummyserver.service.impl.responseformatter;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -11,13 +9,13 @@ import java.util.regex.Pattern;
 public class OneOfTemplateVariableConverter extends BaseTemplateVariableConverter {
 
     @Override
-    public boolean canConvert(String templateVariableName, String templateVariableOptions) {
-        return StringUtils.equalsIgnoreCase("oneOf", templateVariableName);
+    public String getTemplateVariableName() {
+        return "oneOf";
     }
 
     @Override
     public String convert(String templateVariableName, String templateVariableOptions) {
-        if (!canConvert(templateVariableName, templateVariableOptions)) {
+        if (cannotConvert(templateVariableName, templateVariableOptions)) {
             return super.convert(templateVariableName, templateVariableOptions);
         }
         Pattern pattern = Pattern.compile(" '?([^\\s']+)'?");

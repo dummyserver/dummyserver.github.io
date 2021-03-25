@@ -1,6 +1,5 @@
 package com.github.ahenteti.dummyserver.service.impl.responseformatter;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,13 +19,13 @@ public class NowTemplateVariableConverter extends BaseTemplateVariableConverter 
             .ofPattern("yyyy-MM-dd'T'HH:mm:ssX");
 
     @Override
-    public boolean canConvert(String templateVariableName, String templateVariableOptions) {
-        return StringUtils.equalsIgnoreCase("now", templateVariableName);
+    public String getTemplateVariableName() {
+        return "now";
     }
 
     @Override
     public String convert(String templateVariableName, String templateVariableOptions) {
-        if (!canConvert(templateVariableName, templateVariableOptions)) {
+        if (cannotConvert(templateVariableName, templateVariableOptions)) {
             return super.convert(templateVariableName, templateVariableOptions);
         }
         ZonedDateTime res = ZonedDateTime.now(getDateTimeZoneId(templateVariableOptions));

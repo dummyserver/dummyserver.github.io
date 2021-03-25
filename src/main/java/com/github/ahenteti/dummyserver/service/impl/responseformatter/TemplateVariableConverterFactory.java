@@ -3,7 +3,7 @@ package com.github.ahenteti.dummyserver.service.impl.responseformatter;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TemplateVariableConverterChainFactory {
+public class TemplateVariableConverterFactory {
 
     public ITemplateVariableConverter create() {
         BaseTemplateVariableConverter c1 = new HostnameTemplateVariableConverter();
