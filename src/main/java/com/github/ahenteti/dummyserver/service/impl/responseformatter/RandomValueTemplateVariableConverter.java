@@ -17,14 +17,15 @@ public class RandomValueTemplateVariableConverter extends BaseTemplateVariableCo
     }
 
     @Override
-    public String convert(String templateVariableName, String templateVariableOptions) {
-        if (cannotConvert(templateVariableName, templateVariableOptions)) {
-            return super.convert(templateVariableName, templateVariableOptions);
+    public String convert(TemplateVariable templateVariable) {
+        if (cannotConvert(templateVariable)) {
+            return super.convert(templateVariable);
         }
-        int length = getLength(templateVariableOptions);
-        String type = getType(templateVariableOptions);
-        boolean uppercase = getUppercase(templateVariableOptions);
-        boolean lowercase = getLowercase(templateVariableOptions);
+        String options = templateVariable.getOptions();
+        int length = getLength(options);
+        String type = getType(options);
+        boolean uppercase = getUppercase(options);
+        boolean lowercase = getLowercase(options);
 
         String rawValue;
         switch (type) {

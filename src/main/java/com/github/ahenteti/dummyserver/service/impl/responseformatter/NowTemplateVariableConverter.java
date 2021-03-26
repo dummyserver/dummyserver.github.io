@@ -24,24 +24,25 @@ public class NowTemplateVariableConverter extends BaseTemplateVariableConverter 
     }
 
     @Override
-    public String convert(String templateVariableName, String templateVariableOptions) {
-        if (cannotConvert(templateVariableName, templateVariableOptions)) {
-            return super.convert(templateVariableName, templateVariableOptions);
+    public String convert(TemplateVariable templateVariable) {
+        if (cannotConvert(templateVariable)) {
+            return super.convert(templateVariable);
         }
-        ZonedDateTime res = ZonedDateTime.now(getDateTimeZoneId(templateVariableOptions));
-        res = res.plus(getDateTimeChange(templateVariableOptions, "+", "years", "y"), ChronoUnit.YEARS);
-        res = res.minus(getDateTimeChange(templateVariableOptions, "-", "years", "y"), ChronoUnit.YEARS);
-        res = res.plus(getDateTimeChange(templateVariableOptions, "+", "month", "M"), ChronoUnit.MONTHS);
-        res = res.minus(getDateTimeChange(templateVariableOptions, "-", "month", "M"), ChronoUnit.MONTHS);
-        res = res.plus(getDateTimeChange(templateVariableOptions, "+", "days", "d"), ChronoUnit.DAYS);
-        res = res.minus(getDateTimeChange(templateVariableOptions, "-", "days", "d"), ChronoUnit.DAYS);
-        res = res.plus(getDateTimeChange(templateVariableOptions, "+", "hours", "H"), ChronoUnit.HOURS);
-        res = res.minus(getDateTimeChange(templateVariableOptions, "-", "hours", "H"), ChronoUnit.HOURS);
-        res = res.plus(getDateTimeChange(templateVariableOptions, "+", "minutes", "m"), ChronoUnit.MINUTES);
-        res = res.minus(getDateTimeChange(templateVariableOptions, "-", "minutes", "m"), ChronoUnit.MINUTES);
-        res = res.plus(getDateTimeChange(templateVariableOptions, "+", "seconds", "s"), ChronoUnit.SECONDS);
-        res = res.minus(getDateTimeChange(templateVariableOptions, "-", "seconds", "s"), ChronoUnit.SECONDS);
-        return res.format(getDateTimeFormatter(templateVariableOptions));
+        String options = templateVariable.getOptions();
+        ZonedDateTime res = ZonedDateTime.now(getDateTimeZoneId(options));
+        res = res.plus(getDateTimeChange(options, "+", "years", "y"), ChronoUnit.YEARS);
+        res = res.minus(getDateTimeChange(options, "-", "years", "y"), ChronoUnit.YEARS);
+        res = res.plus(getDateTimeChange(options, "+", "month", "M"), ChronoUnit.MONTHS);
+        res = res.minus(getDateTimeChange(options, "-", "month", "M"), ChronoUnit.MONTHS);
+        res = res.plus(getDateTimeChange(options, "+", "days", "d"), ChronoUnit.DAYS);
+        res = res.minus(getDateTimeChange(options, "-", "days", "d"), ChronoUnit.DAYS);
+        res = res.plus(getDateTimeChange(options, "+", "hours", "H"), ChronoUnit.HOURS);
+        res = res.minus(getDateTimeChange(options, "-", "hours", "H"), ChronoUnit.HOURS);
+        res = res.plus(getDateTimeChange(options, "+", "minutes", "m"), ChronoUnit.MINUTES);
+        res = res.minus(getDateTimeChange(options, "-", "minutes", "m"), ChronoUnit.MINUTES);
+        res = res.plus(getDateTimeChange(options, "+", "seconds", "s"), ChronoUnit.SECONDS);
+        res = res.minus(getDateTimeChange(options, "-", "seconds", "s"), ChronoUnit.SECONDS);
+        return res.format(getDateTimeFormatter(options));
     }
 
     private int getDateTimeChange(String options, String sign, String symbol, String shortSymbol) {

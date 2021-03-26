@@ -40,7 +40,9 @@ public class DummyServerResponseBodyFormatter implements IDummyServerResponseBod
             int lastIndex = 0;
             while (matcher.find()) {
                 output.append(template, lastIndex, matcher.start());
-                output.append(templateVariableConverter.convert(matcher.group(1), matcher.group(2)));
+                TemplateVariable templateVariable = TemplateVariable.builder().name(matcher.group(1))
+                        .options(matcher.group(2)).request(request).build();
+                output.append(templateVariableConverter.convert(templateVariable));
                 lastIndex = matcher.end();
             }
             if (lastIndex < template.length()) {

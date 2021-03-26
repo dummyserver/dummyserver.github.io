@@ -5,11 +5,11 @@ public abstract class BaseTemplateVariableConverter implements ITemplateVariable
     private ITemplateVariableConverter next;
 
     @Override
-    public String convert(String templateVariableName, String templateVariableOptions) {
+    public String convert(TemplateVariable templateVariable) {
         if (next != null) {
-            return next.convert(templateVariableName, templateVariableOptions);
+            return next.convert(templateVariable);
         }
-        return templateVariableName + templateVariableOptions;
+        return templateVariable.getName();
     }
 
     public void setNext(ITemplateVariableConverter next) {

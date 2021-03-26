@@ -21,9 +21,9 @@ public class HostnameTemplateVariableConverter extends BaseTemplateVariableConve
     }
 
     @Override
-    public String convert(String templateVariableName, String templateVariableOptions) {
-        if (cannotConvert(templateVariableName, templateVariableOptions)) {
-            return super.convert(templateVariableName, templateVariableOptions);
+    public String convert(TemplateVariable templateVariable) {
+        if (cannotConvert(templateVariable)) {
+            return super.convert(templateVariable);
         }
         return HOSTNAME;
     }

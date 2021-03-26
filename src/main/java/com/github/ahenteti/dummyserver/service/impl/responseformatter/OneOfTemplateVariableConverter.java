@@ -14,12 +14,12 @@ public class OneOfTemplateVariableConverter extends BaseTemplateVariableConverte
     }
 
     @Override
-    public String convert(String templateVariableName, String templateVariableOptions) {
-        if (cannotConvert(templateVariableName, templateVariableOptions)) {
-            return super.convert(templateVariableName, templateVariableOptions);
+    public String convert(TemplateVariable templateVariable) {
+        if (cannotConvert(templateVariable)) {
+            return super.convert(templateVariable);
         }
         Pattern pattern = Pattern.compile(" '?([^\\s']+)'?");
-        Matcher optionsMatcher = pattern.matcher(templateVariableOptions);
+        Matcher optionsMatcher = pattern.matcher(templateVariable.getOptions());
         List<String> optionsAsList = new ArrayList<>();
         while (optionsMatcher.find()) {
             optionsAsList.add(optionsMatcher.group(1));
