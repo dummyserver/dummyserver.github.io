@@ -62,6 +62,6 @@ public class DummyServerRestController {
         }
         requestResponsePairList.sort(Comparator.comparing(DummyServerRequestResponsePair::getPriority));
         DummyServerResponse response = requestResponsePairList.get(FIRST_RESPONSE).getResponse();
-        return converter.toResponseEntity(response);
+        return converter.toResponseEntity(response, request);
     }
 }

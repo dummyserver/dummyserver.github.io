@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,7 +32,7 @@ public class DummyServerResponseBodyFormatter implements IDummyServerResponseBod
     }
 
     @Override
-    public String format(String template) {
+    public String format(String template, HttpServletRequest request) {
         try {
             Pattern pattern = Pattern.compile("\\{\\{([^\\s}]+)(.*?)}}");
             Matcher matcher = pattern.matcher(template);
@@ -53,9 +54,9 @@ public class DummyServerResponseBodyFormatter implements IDummyServerResponseBod
     }
 
     @Override
-    public JsonNode format(JsonNode body) {
+    public JsonNode format(JsonNode body, HttpServletRequest request) {
         try {
-            String bodyString = format(body.toString());
+            String bodyString = format(body.toString(), request);
             return mapper.readTree(bodyString);
         } catch (Exception e) {
             LOGGER.error("error while formatting body. we return the body without formatting", e);

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Service
 public class DummyServerResponseConverter implements IDummyServerResponseConverter {
 
@@ -19,7 +21,7 @@ public class DummyServerResponseConverter implements IDummyServerResponseConvert
     private IDummyServerResponseBodyFormatter bodyFormatter;
 
     @Override
-    public ResponseEntity<?> toResponseEntity(DummyServerResponse response) {
+    public ResponseEntity<?> toResponseEntity(DummyServerResponse response, HttpServletRequest request) {
         sleepSilently(response);
         ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.status(response.getStatus());
         response.getHeaders().forEach(responseBuilder::header);
@@ -27,9 +29,9 @@ public class DummyServerResponseConverter implements IDummyServerResponseConvert
             return responseBuilder.build();
         }
         if (response.getBody() instanceof TextNode) {
-            return responseBuilder.body(bodyFormatter.format(response.getBody().asText()));
+            return responseBuilder.body(bodyFormatter.format(response.getBody().asText(), request));
         }
-        return responseBuilder.body(bodyFormatter.format(response.getBody()));
+        return responseBuilder.body(bodyFormatter.format(response.getBody(), request));
     }
 
     private void sleepSilently(DummyServerResponse response) {
