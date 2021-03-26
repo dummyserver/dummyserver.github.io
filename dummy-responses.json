@@ -23,6 +23,32 @@
   "request" : {
     "method" : "GET",
     "path" : "/api/user",
+    "queries" : {
+      "id" : "3"
+    },
+    "headers" : {
+      "User-Id" : "3"
+    }
+  },
+  "response" : {
+    "status" : 200,
+    "headers" : {
+      "Content-Type" : "application/json"
+    },
+    "body" : [ {
+      "request.path" : "{{request.path2}}",
+      "now" : "{{now}}",
+      "randomValue" : "{{randomValue}}",
+      "oneOf" : "{{oneOf 12 22}}",
+      "hostname" : "{{hostname}}"
+    } ],
+    "delayInMillis" : 0
+  }
+}, {
+  "priority" : 5,
+  "request" : {
+    "method" : "GET",
+    "path" : "/api/user",
     "queries" : { },
     "headers" : {
       "User-Id" : "3"
@@ -34,6 +60,7 @@
       "Content-Type" : "application/json"
     },
     "body" : [ {
+      "request.url" : "{{request.url}}",
       "now" : "{{now}}",
       "randomValue" : "{{randomValue}}",
       "oneOf" : "{{oneOf 12 22}}",

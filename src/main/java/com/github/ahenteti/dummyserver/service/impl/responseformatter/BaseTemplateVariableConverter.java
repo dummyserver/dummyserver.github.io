@@ -9,7 +9,7 @@ public abstract class BaseTemplateVariableConverter implements ITemplateVariable
         if (next != null) {
             return next.convert(templateVariable);
         }
-        return templateVariable.getName();
+        return templateVariable.toString();
     }
 
     public void setNext(ITemplateVariableConverter next) {
