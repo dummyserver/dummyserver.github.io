@@ -36,7 +36,7 @@
       "Content-Type" : "application/json"
     },
     "body" : [ {
-      "request.path" : "{{request.path2}}",
+      "request.path" : "{{request.path}}",
       "now" : "{{now}}",
       "randomValue" : "{{randomValue}}",
       "oneOf" : "{{oneOf 12 22}}",
