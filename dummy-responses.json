@@ -40,7 +40,7 @@
       "request.url" : "{{request.url --with-query-params}}",
       "request.query" : "{{request.query.id2}}",
       "request.header" : "{{request.header.Accept-Encoding}}",
-      "request.body" : "{{request.body --json-path='$.store.name'}}",
+      "request.body" : "{{request.body --xml-path='/Tutorials/Tutorial[@tutId=01]/title'}}",
       "now" : "{{now}}",
       "randomValue" : "{{randomValue}}",
       "oneOf" : "{{oneOf 12 22}}",
