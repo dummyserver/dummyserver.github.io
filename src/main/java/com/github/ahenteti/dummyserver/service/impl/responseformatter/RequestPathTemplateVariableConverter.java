@@ -12,7 +12,12 @@ public class RequestPathTemplateVariableConverter extends BaseTemplateVariableCo
         if (cannotConvert(templateVariable)) {
             return super.convert(templateVariable);
         }
-        return templateVariable.getRequest().getRequestURI();
+        StringBuilder res = new StringBuilder(templateVariable.getRequest().getRequestURI());
+        if (templateVariable.withOption("--with-query-params")) {
+            res.append("?");
+            res.append(templateVariable.getRequest().getQueryString());
+        }
+        return res.toString();
     }
 
 }

@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.StringJoiner;
 
 @Builder
 @Getter
@@ -16,5 +15,9 @@ public class TemplateVariable {
     @Override
     public String toString() {
         return "{{" + name + options + "}}";
+    }
+
+    public boolean withOption(String option) {
+        return options.contains(option);
     }
 }

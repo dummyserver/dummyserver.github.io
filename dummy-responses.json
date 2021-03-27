@@ -36,7 +36,8 @@
       "Content-Type" : "application/json"
     },
     "body" : [ {
-      "request.path" : "{{request.path}}",
+      "request.path" : "{{request.path --with-query-params}}",
+      "request.url" : "{{request.url --with-query-params}}",
       "now" : "{{now}}",
       "randomValue" : "{{randomValue}}",
       "oneOf" : "{{oneOf 12 22}}",

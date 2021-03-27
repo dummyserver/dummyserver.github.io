@@ -12,7 +12,12 @@ public class RequestUrlTemplateVariableConverter extends BaseTemplateVariableCon
         if (cannotConvert(templateVariable)) {
             return super.convert(templateVariable);
         }
-        return templateVariable.getRequest().getRequestURL().toString();
+        StringBuilder res = new StringBuilder(templateVariable.getRequest().getRequestURL().toString());
+        if (templateVariable.withOption("--with-query-params")) {
+            res.append("?");
+            res.append(templateVariable.getRequest().getQueryString());
+        }
+        return res.toString();
     }
 
 }
