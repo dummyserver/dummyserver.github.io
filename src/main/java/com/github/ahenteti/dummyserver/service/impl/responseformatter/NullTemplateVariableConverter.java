@@ -20,6 +20,6 @@ public class NullTemplateVariableConverter implements ITemplateVariableConverter
 
     @Override
     public String convert(TemplateVariable templateVariable) {
-        return "";
+        return templateVariable.toString();
     }
 }
