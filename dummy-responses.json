@@ -39,6 +39,7 @@
       "request.path" : "{{request.path --with-query-params}}",
       "request.url" : "{{request.url --with-query-params}}",
       "request.query" : "{{request.query.id2}}",
+      "request.header" : "{{request.header.Accept-Encoding}}",
       "now" : "{{now}}",
       "randomValue" : "{{randomValue}}",
       "oneOf" : "{{oneOf 12 22}}",
