@@ -3,6 +3,36 @@
   "request" : {
     "method" : "GET",
     "path" : "/api/user",
+    "queries" : {
+      "id" : "3000"
+    },
+    "headers" : {
+      "User-Id" : "3"
+    }
+  },
+  "response" : {
+    "status" : 200,
+    "headers" : {
+      "Content-Type" : "application/json"
+    },
+    "body" : [ {
+      "request.path" : "{{request.path --with-query-params}}",
+      "request.url" : "{{request.url --with-query-params}}",
+      "request.query" : "{{request.query.id --remove-quotes}}",
+      "request.header" : "{{request.header.Accept-Encoding}}",
+      "request.body" : "{{request.body --xml-path='/Tutorials/Tutorial[@tutId=01]/title'}}",
+      "now" : "{{now}}",
+      "randomValue" : "{{randomValue}}",
+      "oneOf" : "{{oneOf 12 22 --remove-quotes}}",
+      "hostname" : "{{hostname}}"
+    } ],
+    "delayInMillis" : 0
+  }
+}, {
+  "priority" : 5,
+  "request" : {
+    "method" : "GET",
+    "path" : "/api/user",
     "queries" : { },
     "headers" : {
       "User-Id" : "2"
@@ -38,12 +68,12 @@
     "body" : [ {
       "request.path" : "{{request.path --with-query-params}}",
       "request.url" : "{{request.url --with-query-params}}",
-      "request.query" : "{{request.query.id2}}",
+      "request.query" : "{{request.query.id --remove-quotes}}",
       "request.header" : "{{request.header.Accept-Encoding}}",
       "request.body" : "{{request.body --xml-path='/Tutorials/Tutorial[@tutId=01]/title'}}",
       "now" : "{{now}}",
       "randomValue" : "{{randomValue}}",
-      "oneOf" : "{{oneOf 12 22}}",
+      "oneOf" : "{{oneOf 12 22 --remove-quotes}}",
       "hostname" : "{{hostname}}"
     } ],
     "delayInMillis" : 0

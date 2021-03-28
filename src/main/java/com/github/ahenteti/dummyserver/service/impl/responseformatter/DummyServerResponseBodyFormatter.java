@@ -39,11 +39,11 @@ public class DummyServerResponseBodyFormatter implements IDummyServerResponseBod
             StringBuilder output = new StringBuilder();
             int lastIndex = 0;
             while (matcher.find()) {
-                output.append(template, lastIndex, matcher.start());
                 TemplateVariable templateVariable = TemplateVariable.builder().name(matcher.group(1))
-                        .options(matcher.group(2)).request(request).build();
+                        .rawOptions(matcher.group(2)).request(request).matcher(matcher).build();
+                output.append(template, lastIndex, templateVariable.start());
                 output.append(templateVariableConverter.convert(templateVariable));
-                lastIndex = matcher.end();
+                lastIndex = templateVariable.end();
             }
             if (lastIndex < template.length()) {
                 output.append(template, lastIndex, template.length());
