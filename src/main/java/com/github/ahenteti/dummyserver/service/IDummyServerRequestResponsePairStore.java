@@ -6,9 +6,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Set;
 
-public interface IDummyServerRequestResponseStore {
+public interface IDummyServerRequestResponsePairStore {
+
+    void add(DummyServerRequestResponsePair[] requestResponsePairs);
+
     void add(DummyServerRequestResponsePair requestResponse);
-    
+
     boolean remove(DummyServerRequestResponsePair requestResponse);
 
     List<DummyServerRequestResponsePair> getByHttpRequest(HttpServletRequest request);
@@ -16,4 +19,5 @@ public interface IDummyServerRequestResponseStore {
     Set<DummyServerRequestResponsePair> getAll();
 
     void clear();
+
 }

@@ -1,7 +1,7 @@
 package com.github.ahenteti.dummyserver.service.impl;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.github.ahenteti.dummyserver.service.IDummyServerRequestResponseStore;
+import com.github.ahenteti.dummyserver.service.IDummyServerRequestResponsePairStore;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -18,12 +18,12 @@ import java.nio.file.Paths;
 
 @Aspect
 @Component
-public class DummyServerRequestResponseStoreDumper {
+public class DummyServerRequestResponsePairStoreDumper {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DummyServerRequestResponseStoreDumper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DummyServerRequestResponsePairStoreDumper.class);
 
     @Autowired
-    private IDummyServerRequestResponseStore store;
+    private IDummyServerRequestResponsePairStore store;
 
     @Autowired
     private JsonMapper jsonMapper;

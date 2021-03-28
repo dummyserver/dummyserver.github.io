@@ -3,7 +3,7 @@ package com.github.ahenteti.dummyserver.service.impl;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.ahenteti.dummyserver.model.DummyServerRequestResponsePair;
 import com.github.ahenteti.dummyserver.service.IDummyServerRequestComparator;
-import com.github.ahenteti.dummyserver.service.IDummyServerRequestResponseStore;
+import com.github.ahenteti.dummyserver.service.IDummyServerRequestResponsePairStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class DummyServerRequestResponseStore implements IDummyServerRequestResponseStore {
+public class DummyServerRequestResponsePairStore implements IDummyServerRequestResponsePairStore {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DummyServerRequestResponseStore.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DummyServerRequestResponsePairStore.class);
 
     private Set<DummyServerRequestResponsePair> requestResponseList = new HashSet<>();
 
@@ -46,6 +46,12 @@ public class DummyServerRequestResponseStore implements IDummyServerRequestRespo
         } catch (Exception e) {
             LOGGER.error("error while reading {}", dummyResponsesFile, e);
         }
+    }
+
+    @Override
+    @DumpStore
+    public void add(DummyServerRequestResponsePair[] requestResponsePairs) {
+        Arrays.stream(requestResponsePairs).forEach(this::add);
     }
 
     @Override

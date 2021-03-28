@@ -105,9 +105,56 @@
   }
 }, {
   "priority" : 5,
+  "description" : "GET Bob user",
+  "request" : {
+    "method" : "GET",
+    "path" : "/user",
+    "queries" : { },
+    "headers" : {
+      "User-Id" : {
+        "equalsTo" : "2"
+      },
+      "User-Id2" : "2"
+    }
+  },
+  "response" : {
+    "status" : 200,
+    "headers" : {
+      "Content-Type" : "application/json"
+    },
+    "body" : [ {
+      "name" : "Bob"
+    } ],
+    "delayInMillis" : 0
+  }
+}, {
+  "priority" : 5,
   "request" : {
     "method" : "GET",
     "path" : "/api/user",
+    "queries" : { },
+    "headers" : {
+      "User-Id" : {
+        "equalsTo" : "1"
+      }
+    }
+  },
+  "response" : {
+    "status" : 200,
+    "headers" : {
+      "Content-Type" : "application/json"
+    },
+    "body" : [ {
+      "name" : "Alex"
+    } ],
+    "delayInMillis" : 0
+  }
+}, {
+  "priority" : 5,
+  "description" : "GET Alex user",
+  "request" : {
+    "method" : "GET",
+    "path" : "/user",
     "queries" : { },
     "headers" : {
       "User-Id" : {
