@@ -19,7 +19,7 @@
       "request.path.segments" : "{{request.path.segments[2]}}",
       "request.path" : "{{request.path --with-query-params}}",
       "request.url" : "{{request.url --with-query-params}}",
-      "request.query" : "{{request.query.id --remove-quotes}}",
+      "request.query" : "{{request.query.id2[1]}}",
       "request.header" : "{{request.header.Accept-Encoding}}",
       "request.body" : "{{request.body --xml-path='/Tutorials/Tutorial[@tutId=01]/title'}}",
       "now" : "{{now}}",

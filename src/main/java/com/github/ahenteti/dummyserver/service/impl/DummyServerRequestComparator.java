@@ -17,9 +17,14 @@ public class DummyServerRequestComparator implements IDummyServerRequestComparat
         if (!StringUtils.equalsIgnoreCase(dummyServerRequest.getMethod(), httpServletRequest.getMethod())) return false;
         for (Map.Entry<String, Object> query : dummyServerRequest.getQueries().entrySet()) {
             String queryName = query.getKey();
-            String queryValue = httpServletRequest.getParameter(queryName);
             Object expectation = query.getValue();
-            if (ValueUtils.isNotAsExpected(queryValue, expectation)) return false;
+            String[] queryValues = httpServletRequest.getParameterMap().get(queryName);
+            if (queryValues != null) {
+                for (String queryValue : queryValues) {
+                    if (ValueUtils.isAsExpected(queryValue, expectation)) return true;
+                }
+            }
+            return false;
         }
         for (Map.Entry<String, Object> header : dummyServerRequest.getHeaders().entrySet()) {
             String headerName = header.getKey();

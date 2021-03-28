@@ -22,14 +22,22 @@ public class RequestQueryTemplateVariableConverter extends BaseTemplateVariableC
         if (cannotConvert(templateVariable)) {
             return super.convert(templateVariable);
         }
-        Pattern pattern = Pattern.compile("request\\.query\\.([^.]+)");
+        Pattern pattern = Pattern.compile("request\\.query\\.([^\\[]+)(\\[(\\d+)])?");
         Matcher matcher = pattern.matcher(templateVariable.getName());
         if (!matcher.find()) {
             return templateVariable.toString();
         }
         String queryName = matcher.group(1);
-        String queryValue = templateVariable.getRequest().getParameter(queryName);
-        return StringUtils.isNotBlank(queryValue) ? queryValue : templateVariable.toString();
+        int queryNumber = matcher.group(3) != null ? Integer.parseInt(matcher.group(3)) : 1;
+        String[] queryValues = templateVariable.getRequest().getParameterMap().get(queryName);
+        if (queryValues == null) {
+            return templateVariable.toString();
+        }
+        try {
+            return queryValues[queryNumber - 1];
+        } catch (Exception e) {
+            return templateVariable.toString();
+        }
     }
 
 }
