@@ -52,7 +52,7 @@ public class DummyServerRestController {
     }
 
     @PostMapping("/api/dummy-response-list")
-    public void addDummyResponseList(@RequestBody String requestBody, @RequestParam(value = "format") String requestBodyFormatRequestParam, @RequestHeader(value = "X-Request-Body-Format") String requestBodyFormatRequestHeader) {
+    public void addDummyResponseList(@RequestBody String requestBody, @RequestParam(value = "format", required = false) String requestBodyFormatRequestParam, @RequestHeader(value = "X-Request-Body-Format", required = false) String requestBodyFormatRequestHeader) {
         String requestBodyFormat = getRequestBodyFormat(requestBodyFormatRequestParam, requestBodyFormatRequestHeader);
         DummyServerRequestResponsePair[] requestResponsePairs = requestResponsePairConverter
                 .toRequestResponsePairs(requestBody, requestBodyFormat);

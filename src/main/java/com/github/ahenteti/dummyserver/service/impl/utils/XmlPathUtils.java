@@ -1,4 +1,4 @@
-package com.github.ahenteti.dummyserver.service.impl.responseformatter;
+package com.github.ahenteti.dummyserver.service.impl.utils;
 
 import org.w3c.dom.Document;
 
@@ -9,7 +9,7 @@ import javax.xml.xpath.XPathFactory;
 import java.io.ByteArrayInputStream;
 import java.util.Optional;
 
-public class XmlPath {
+public class XmlPathUtils {
 
     public static Optional<String> read(String content, String path) {
         try {

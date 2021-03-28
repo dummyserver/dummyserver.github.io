@@ -1,4 +1,4 @@
-package com.github.ahenteti.dummyserver.service.impl;
+package com.github.ahenteti.dummyserver.service.impl.utils;
 
 import org.apache.commons.lang3.StringUtils;
 

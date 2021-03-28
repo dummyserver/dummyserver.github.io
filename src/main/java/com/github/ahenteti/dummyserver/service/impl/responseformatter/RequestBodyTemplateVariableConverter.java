@@ -1,5 +1,6 @@
 package com.github.ahenteti.dummyserver.service.impl.responseformatter;
 
+import com.github.ahenteti.dummyserver.service.impl.utils.XmlPathUtils;
 import com.jayway.jsonpath.JsonPath;
 
 import java.util.Optional;
@@ -32,7 +33,7 @@ public class RequestBodyTemplateVariableConverter extends BaseTemplateVariableCo
 
         Optional<String> xmlPath = templateVariable.getOption("--xml-path");
         if (xmlPath.isPresent()) {
-            Optional<String> value = XmlPath.read(requestBody.get(), xmlPath.get());
+            Optional<String> value = XmlPathUtils.read(requestBody.get(), xmlPath.get());
             if (value.isPresent()) {
                 return value.get();
             }
