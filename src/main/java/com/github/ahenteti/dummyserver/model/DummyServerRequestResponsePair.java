@@ -10,6 +10,8 @@ import java.util.Objects;
 public class DummyServerRequestResponsePair {
 
     private Integer priority = 5;
+    private String name;
+    private String description;
     private DummyServerRequest request;
     private DummyServerResponse response;
 
