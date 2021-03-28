@@ -16,6 +16,7 @@
       "Content-Type" : "application/json"
     },
     "body" : [ {
+      "request.path.segments" : "{{request.path.segments[2]}}",
       "request.path" : "{{request.path --with-query-params}}",
       "request.url" : "{{request.url --with-query-params}}",
       "request.query" : "{{request.query.id --remove-quotes}}",
