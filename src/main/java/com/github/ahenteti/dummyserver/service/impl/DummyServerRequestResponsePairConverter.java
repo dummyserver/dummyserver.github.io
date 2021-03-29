@@ -8,11 +8,13 @@ import com.github.ahenteti.dummyserver.model.DummyServerResponse;
 import com.github.ahenteti.dummyserver.service.IDummyServerRequestResponsePairConverter;
 import com.github.ahenteti.dummyserver.service.impl.utils.ArrayUtils;
 import com.github.ahenteti.dummyserver.service.impl.utils.FileUtils;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.parser.OpenAPIV3Parser;
+import io.swagger.v3.parser.core.models.ParseOptions;
 import org.apache.commons.lang3.StringUtils;
-import org.openapi4j.parser.OpenApi3Parser;
-import org.openapi4j.parser.model.v3.OpenApi3;
-import org.openapi4j.parser.model.v3.Operation;
-import org.openapi4j.parser.model.v3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +37,7 @@ public class DummyServerRequestResponsePairConverter implements IDummyServerRequ
     @Autowired
     private JsonMapper jsonMapper;
 
-    private OpenApi3Parser openApi3Parser = new OpenApi3Parser();
+    private OpenAPIV3Parser openApi3Parser = new OpenAPIV3Parser();
 
     @Override
     public DummyServerRequestResponsePair[] toRequestResponsePairs(String requestBody, String rawRequestBodyFormat) {
@@ -62,11 +65,13 @@ public class DummyServerRequestResponsePairConverter implements IDummyServerRequ
             List<DummyServerRequestResponsePair> res = new ArrayList<>();
             openApiV3Path = Files.createTempFile("openapiv3", ".json");
             Files.writeString(openApiV3Path, openApiV3Content);
-            OpenApi3 openApi = openApi3Parser.parse(openApiV3Path.toFile(), false);
-            for (Map.Entry<String, org.openapi4j.parser.model.v3.Path> pathEntry : openApi.getPaths().entrySet()) {
+            ParseOptions parseOptions = new ParseOptions();
+            parseOptions.setFlatten(true);
+            OpenAPI openApi = openApi3Parser.read(openApiV3Path.toAbsolutePath().toString(), null, parseOptions);
+            for (Map.Entry<String, PathItem> pathEntry : openApi.getPaths().entrySet()) {
                 String pathString = pathEntry.getKey();
-                org.openapi4j.parser.model.v3.Path path = pathEntry.getValue();
-                for (Map.Entry<String, Operation> operationEntry : path.getOperations().entrySet()) {
+                PathItem path = pathEntry.getValue();
+                for (Map.Entry<String, Operation> operationEntry : getOperations(path).entrySet()) {
                     DummyServerRequestResponsePair reqResPair = new DummyServerRequestResponsePair();
                     reqResPair.setName(operationEntry.getKey().toUpperCase() + " " + pathString);
                     reqResPair.setDescription(operationEntry.getValue().getDescription());
@@ -75,12 +80,26 @@ public class DummyServerRequestResponsePairConverter implements IDummyServerRequ
                     res.add(reqResPair);
                 }
             }
+
             return ArrayUtils.toArray(res, DummyServerRequestResponsePair.class);
         } catch (Exception e) {
             return EMPTY_ARRAY;
         } finally {
             FileUtils.deleteSilently(openApiV3Path);
         }
+    }
+
+    private Map<String, Operation> getOperations(PathItem path) {
+        Map<String, Operation> res = new HashMap<>();
+        if (path.getGet() != null) res.put("GET", path.getGet());
+        if (path.getPost() != null) res.put("POST", path.getPost());
+        if (path.getPut() != null) res.put("PUT", path.getPut());
+        if (path.getDelete() != null) res.put("DELETE", path.getDelete());
+        if (path.getOptions() != null) res.put("OPTIONS", path.getOptions());
+        if (path.getHead() != null) res.put("HEAD", path.getHead());
+        if (path.getPatch() != null) res.put("PATCH", path.getPatch());
+        if (path.getTrace() != null) res.put("TRACE", path.getTrace());
+        return res;
     }
 
     private DummyServerRequest toDummyServerRequest(String path, Map.Entry<String, Operation> operation) {
@@ -92,11 +111,11 @@ public class DummyServerRequestResponsePairConverter implements IDummyServerRequ
 
     private DummyServerResponse toDummyServerResponse(Map.Entry<String, Operation> operation) {
         DummyServerResponse res = new DummyServerResponse();
-        if (operation.getValue().getResponse("200") != null) {
+        if (operation.getValue().getResponses().get("200") != null) {
             res.setStatus(200);
         } else {
             res.setStatus(404);
-            for (Map.Entry<String, Response> responseEntry : operation.getValue().getResponses().entrySet()) {
+            for (Map.Entry<String, ApiResponse> responseEntry : operation.getValue().getResponses().entrySet()) {
                 try {
                     res.setStatus(Integer.parseInt(responseEntry.getKey()));
                     break;

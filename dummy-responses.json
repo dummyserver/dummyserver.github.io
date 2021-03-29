@@ -16,7 +16,6 @@
 }, {
   "priority" : 5,
   "name" : "POST /user/createWithArray",
-  "description" : "",
   "request" : {
     "method" : "POST",
     "path" : "/user/createWithArray",
@@ -106,7 +105,6 @@
 }, {
   "priority" : 5,
   "name" : "POST /user/createWithList",
-  "description" : "",
   "request" : {
     "method" : "POST",
     "path" : "/user/createWithList",
@@ -175,7 +173,6 @@
 }, {
   "priority" : 5,
   "name" : "DELETE /pet/{petId}",
-  "description" : "",
   "request" : {
     "method" : "DELETE",
     "path" : "/pet/(.+?)",
@@ -205,7 +202,6 @@
 }, {
   "priority" : 5,
   "name" : "GET /user/login",
-  "description" : "",
   "request" : {
     "method" : "GET",
     "path" : "/user/login",
@@ -235,7 +231,6 @@
 }, {
   "priority" : 5,
   "name" : "GET /user/logout",
-  "description" : "",
   "request" : {
     "method" : "GET",
     "path" : "/user/logout",
@@ -265,7 +260,6 @@
 }, {
   "priority" : 5,
   "name" : "GET /user/{username}",
-  "description" : "",
   "request" : {
     "method" : "GET",
     "path" : "/user/(.+?)",
@@ -280,7 +274,6 @@
 }, {
   "priority" : 5,
   "name" : "POST /pet/{petId}",
-  "description" : "",
   "request" : {
     "method" : "POST",
     "path" : "/pet/(.+?)",
@@ -295,7 +288,6 @@
 }, {
   "priority" : 5,
   "name" : "POST /pet/{petId}/uploadImage",
-  "description" : "",
   "request" : {
     "method" : "POST",
     "path" : "/pet/(.+?)/uploadImage",
@@ -378,7 +370,6 @@
 }, {
   "priority" : 5,
   "name" : "POST /pet",
-  "description" : "",
   "request" : {
     "method" : "POST",
     "path" : "/pet",
@@ -408,7 +399,6 @@
 }, {
   "priority" : 5,
   "name" : "POST /store/order",
-  "description" : "",
   "request" : {
     "method" : "POST",
     "path" : "/store/order",
@@ -445,7 +435,6 @@
 }, {
   "priority" : 5,
   "name" : "PUT /pet",
-  "description" : "",
   "request" : {
     "method" : "PUT",
     "path" : "/pet",
