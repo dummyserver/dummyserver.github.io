@@ -1,6 +1,5 @@
 package com.github.ahenteti.dummyserver.service.impl;
 
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.ahenteti.dummyserver.exception.InternalServerErrorException;
 import com.github.ahenteti.dummyserver.model.DummyServerRequest;
 import com.github.ahenteti.dummyserver.model.DummyServerRequestResponsePair;
@@ -13,11 +12,8 @@ import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.parser.OpenAPIV3Parser;
-import io.swagger.v3.parser.core.models.ParseOptions;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Files;
@@ -28,46 +24,21 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class DummyServerRequestResponsePairConverter implements IDummyServerRequestResponsePairConverter {
+public class OpenApiV3DummyServerRequestResponsePairConverter implements IDummyServerRequestResponsePairConverter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DummyServerRequestResponsePairConverter.class);
-
-    private static final DummyServerRequestResponsePair[] EMPTY_ARRAY = {};
-
-    @Autowired
-    private JsonMapper jsonMapper;
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(OpenApiV3DummyServerRequestResponsePairConverter.class);
 
     private OpenAPIV3Parser openApi3Parser = new OpenAPIV3Parser();
 
     @Override
-    public DummyServerRequestResponsePair[] toRequestResponsePairs(String requestBody, String rawRequestBodyFormat) {
-        try {
-            String requestBodyFormat = rawRequestBodyFormat.replaceAll("[-.]", "");
-            if (StringUtils.equalsIgnoreCase("default", requestBodyFormat)) {
-                return jsonMapper.readValue(requestBody, DummyServerRequestResponsePair[].class);
-            }
-            if (StringUtils.equalsIgnoreCase("openapiv3", requestBodyFormat)) {
-                return toRequestResponsePairsFromOpenApiV3(requestBody);
-            }
-            throw new InternalServerErrorException("unknown requestBodyFormat: " + rawRequestBodyFormat);
-        } catch (Exception e) {
-            StringBuilder message = new StringBuilder("error while converting responseBody to an array of DummyServerRequestResponsePair. requestBody: ");
-            message.append(requestBody);
-            message.append(", requestBodyFormat: ");
-            message.append(rawRequestBodyFormat);
-            throw new InternalServerErrorException(message.toString(), e);
-        }
-    }
-
-    private DummyServerRequestResponsePair[] toRequestResponsePairsFromOpenApiV3(String openApiV3Content) {
+    public DummyServerRequestResponsePair[] toRequestResponsePairs(String requestBody) {
         Path openApiV3Path = null;
         try {
             List<DummyServerRequestResponsePair> res = new ArrayList<>();
             openApiV3Path = Files.createTempFile("openapiv3", ".json");
-            Files.writeString(openApiV3Path, openApiV3Content);
-            ParseOptions parseOptions = new ParseOptions();
-            parseOptions.setFlatten(true);
-            OpenAPI openApi = openApi3Parser.read(openApiV3Path.toAbsolutePath().toString(), null, parseOptions);
+            Files.writeString(openApiV3Path, requestBody);
+            OpenAPI openApi = openApi3Parser.read(openApiV3Path.toAbsolutePath().toString());
             for (Map.Entry<String, PathItem> pathEntry : openApi.getPaths().entrySet()) {
                 String pathString = pathEntry.getKey();
                 PathItem path = pathEntry.getValue();
@@ -83,7 +54,7 @@ public class DummyServerRequestResponsePairConverter implements IDummyServerRequ
 
             return ArrayUtils.toArray(res, DummyServerRequestResponsePair.class);
         } catch (Exception e) {
-            return EMPTY_ARRAY;
+            throw new InternalServerErrorException("error while converting responseBody to an array of DummyServerRequestResponsePair. requestBody: " + requestBody, e);
         } finally {
             FileUtils.deleteSilently(openApiV3Path);
         }

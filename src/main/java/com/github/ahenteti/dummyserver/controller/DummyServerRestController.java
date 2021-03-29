@@ -3,6 +3,7 @@ package com.github.ahenteti.dummyserver.controller;
 import com.github.ahenteti.dummyserver.model.DummyServerRequestResponsePair;
 import com.github.ahenteti.dummyserver.model.DummyServerResponse;
 import com.github.ahenteti.dummyserver.service.IDummyServerRequestResponsePairConverter;
+import com.github.ahenteti.dummyserver.service.IDummyServerRequestResponsePairConverterFactory;
 import com.github.ahenteti.dummyserver.service.IDummyServerRequestResponsePairStore;
 import com.github.ahenteti.dummyserver.service.IDummyServerResponseConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class DummyServerRestController {
     private IDummyServerRequestResponsePairStore requestResponsePairStore;
 
     @Autowired
-    private IDummyServerRequestResponsePairConverter requestResponsePairConverter;
+    private IDummyServerRequestResponsePairConverterFactory requestResponsePairConverterFactory;
 
     @Autowired
     private IDummyServerResponseConverter responseConverter;
@@ -54,8 +55,10 @@ public class DummyServerRestController {
     @PostMapping("/api/dummy-response-list")
     public void addDummyResponseList(@RequestBody String requestBody, @RequestParam(value = "format", required = false) String requestBodyFormatRequestParam, @RequestHeader(value = "X-Request-Body-Format", required = false) String requestBodyFormatRequestHeader) {
         String requestBodyFormat = getRequestBodyFormat(requestBodyFormatRequestParam, requestBodyFormatRequestHeader);
+        IDummyServerRequestResponsePairConverter requestResponsePairConverter = requestResponsePairConverterFactory
+                .create(requestBodyFormat);
         DummyServerRequestResponsePair[] requestResponsePairs = requestResponsePairConverter
-                .toRequestResponsePairs(requestBody, requestBodyFormat);
+                .toRequestResponsePairs(requestBody);
         requestResponsePairStore.add(requestResponsePairs);
     }
 
