@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.json.JsonString;
 import javax.servlet.http.HttpServletRequest;
 
 @Service
@@ -28,8 +29,8 @@ public class DummyServerResponseConverter implements IDummyServerResponseConvert
         if (response.getBody() == null) {
             return responseBuilder.build();
         }
-        if (response.getBody() instanceof TextNode) {
-            return responseBuilder.body(bodyFormatter.format(response.getBody().asText(), request));
+        if (response.getBody() instanceof JsonString) {
+            return responseBuilder.body(bodyFormatter.format(response.getBody().toString(), request));
         }
         return responseBuilder.body(bodyFormatter.format(response.getBody(), request));
     }

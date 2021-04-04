@@ -1,7 +1,6 @@
 package com.github.ahenteti.dummyserver.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -13,7 +12,7 @@ public class DummyServerResponse {
 
     private Integer status;
     private Map<String, String> headers = new HashMap<>();
-    private JsonNode body;
+    private Object body;
     private Integer delayInMillis = 0;
 
 }

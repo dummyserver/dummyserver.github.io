@@ -29,6 +29,25 @@
   }
 }, {
   "priority" : 5,
+  "description" : "GET Bob user",
+  "request" : {
+    "method" : "GET",
+    "path" : "/api/user",
+    "queries" : { },
+    "headers" : {
+      "User-Id" : "4"
+    }
+  },
+  "response" : {
+    "status" : 200,
+    "headers" : {
+      "Content-Type" : "text/plain"
+    },
+    "body" : "Hello World. {{now}}",
+    "delayInMillis" : 0
+  }
+}, {
+  "priority" : 5,
   "request" : {
     "method" : "GET",
     "path" : "/api/user",
@@ -45,60 +64,16 @@
       "Content-Type" : "application/json"
     },
     "body" : [ {
-      "request.path.segments" : "{{request.path.segments[2]}}",
-      "request.path" : "{{request.path --with-query-params}}",
-      "request.url" : "{{request.url --with-query-params}}",
-      "request.query" : "{{request.query.id2[1]}}",
-      "request.header" : "{{request.header.Accept-Encoding}}",
       "request.body" : "{{request.body --xml-path='/Tutorials/Tutorial[@tutId=01]/title'}}",
-      "now" : "{{now}}",
-      "randomValue" : "{{randomValue}}",
       "oneOf" : "{{oneOf 12 22 --remove-quotes}}",
-      "hostname" : "{{hostname}}"
-    } ],
-    "delayInMillis" : 0
-  }
-}, {
-  "priority" : 5,
-  "request" : {
-    "method" : "GET",
-    "path" : "/api/user",
-    "queries" : { },
-    "headers" : {
-      "User-Id" : "2"
-    }
-  },
-  "response" : {
-    "status" : 200,
-    "headers" : {
-      "Content-Type" : "application/json"
-    },
-    "body" : [ {
-      "name" : "Bob"
-    } ],
-    "delayInMillis" : 0
-  }
-}, {
-  "priority" : 5,
-  "request" : {
-    "method" : "GET",
-    "path" : "/api/user",
-    "queries" : { },
-    "headers" : {
-      "User-Id" : "3"
-    }
-  },
-  "response" : {
-    "status" : 200,
-    "headers" : {
-      "Content-Type" : "application/json"
-    },
-    "body" : [ {
-      "request.url" : "{{request.url}}",
+      "hostname" : "{{hostname}}",
+      "request.query" : "{{request.query.id2[1]}}",
+      "request.path.segments" : "{{request.path.segments[2]}}",
+      "request.header" : "{{request.header.Accept-Encoding}}",
       "now" : "{{now}}",
       "randomValue" : "{{randomValue}}",
-      "oneOf" : "{{oneOf 12 22}}",
-      "hostname" : "{{hostname}}"
+      "request.url" : "{{request.url --with-query-params}}",
+      "request.path" : "{{request.path --with-query-params}}"
     } ],
     "delayInMillis" : 0
   }
@@ -139,10 +114,10 @@
     "path" : "/user",
     "queries" : { },
     "headers" : {
+      "User-Id2" : "2",
       "User-Id" : {
         "equalsTo" : "2"
-      },
-      "User-Id2" : "2"
+      }
     }
   },
   "response" : {
@@ -168,6 +143,25 @@
   "response" : {
     "status" : 400,
     "headers" : { },
+    "delayInMillis" : 0
+  }
+}, {
+  "priority" : 5,
+  "description" : "GET Bob user",
+  "request" : {
+    "method" : "GET",
+    "path" : "/api/user",
+    "queries" : { },
+    "headers" : {
+      "id" : "4"
+    }
+  },
+  "response" : {
+    "status" : 200,
+    "headers" : {
+      "Content-Type" : "text/plain"
+    },
+    "body" : "Hello World. {{now}}",
     "delayInMillis" : 0
   }
 }, {
@@ -339,36 +333,6 @@
   }
 }, {
   "priority" : 5,
-  "request" : {
-    "method" : "GET",
-    "path" : "/api/user",
-    "queries" : {
-      "id" : "3"
-    },
-    "headers" : {
-      "User-Id" : "3"
-    }
-  },
-  "response" : {
-    "status" : 200,
-    "headers" : {
-      "Content-Type" : "application/json"
-    },
-    "body" : [ {
-      "request.path" : "{{request.path --with-query-params}}",
-      "request.url" : "{{request.url --with-query-params}}",
-      "request.query" : "{{request.query.id --remove-quotes}}",
-      "request.header" : "{{request.header.Accept-Encoding}}",
-      "request.body" : "{{request.body --xml-path='/Tutorials/Tutorial[@tutId=01]/title'}}",
-      "now" : "{{now}}",
-      "randomValue" : "{{randomValue}}",
-      "oneOf" : "{{oneOf 12 22 --remove-quotes}}",
-      "hostname" : "{{hostname}}"
-    } ],
-    "delayInMillis" : 0
-  }
-}, {
-  "priority" : 5,
   "name" : "POST /pet",
   "request" : {
     "method" : "POST",
@@ -408,28 +372,6 @@
   "response" : {
     "status" : 200,
     "headers" : { },
-    "delayInMillis" : 0
-  }
-}, {
-  "priority" : 5,
-  "request" : {
-    "method" : "GET",
-    "path" : "/api/user",
-    "queries" : { },
-    "headers" : {
-      "User-Id" : {
-        "equalsTo" : "1"
-      }
-    }
-  },
-  "response" : {
-    "status" : 200,
-    "headers" : {
-      "Content-Type" : "application/json"
-    },
-    "body" : [ {
-      "name" : "Alex"
-    } ],
     "delayInMillis" : 0
   }
 }, {

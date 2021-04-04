@@ -1,7 +1,5 @@
 package com.github.ahenteti.dummyserver.service.impl.responseformatter;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.ahenteti.dummyserver.service.IDummyServerResponseBodyFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,9 +17,6 @@ import java.util.regex.Pattern;
 public class DummyServerResponseBodyFormatter implements IDummyServerResponseBodyFormatter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DummyServerResponseBodyFormatter.class);
-
-    @Autowired
-    private JsonMapper mapper;
 
     @Autowired
     private TemplateVariableConverterFactory templateVariableConverterFactory;
@@ -56,10 +53,10 @@ public class DummyServerResponseBodyFormatter implements IDummyServerResponseBod
     }
 
     @Override
-    public JsonNode format(JsonNode body, HttpServletRequest request) {
-        try {
-            String bodyString = format(body.toString(), request);
-            return mapper.readTree(bodyString);
+    public Object format(Object body, HttpServletRequest request) {
+        try (Jsonb jsonb = JsonbBuilder.create()) {
+            String bodyString = format(jsonb.toJson(body), request);
+            return jsonb.fromJson(bodyString, Object.class);
         } catch (Exception e) {
             LOGGER.error("error while formatting body. we return the body without formatting", e);
             return body;
