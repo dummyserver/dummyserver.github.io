@@ -1,6 +1,5 @@
 package com.github.ahenteti.dummyserver.service.impl;
 
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.ahenteti.dummyserver.service.IDummyServerRequestResponsePairStore;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -11,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,9 +26,6 @@ public class DummyServerRequestResponsePairStoreDumper {
     @Autowired
     private IDummyServerRequestResponsePairStore store;
 
-    @Autowired
-    private JsonMapper jsonMapper;
-
     @Value("${dummy.responses.file}")
     private String dummyResponsesFile;
 
@@ -37,10 +35,10 @@ public class DummyServerRequestResponsePairStoreDumper {
     @After("@annotation(com.github.ahenteti.dummyserver.service.impl.DumpStore)")
     public void dumpStore(JoinPoint joinPoint) {
         if (!autoDump) return;
-        try {
+        try (Jsonb jsonb = JsonbBuilder.create()) {
             Path dummyResponsesFilePath = Paths.get(dummyResponsesFile);
             createFileIfNotExists(dummyResponsesFilePath);
-            jsonMapper.writeValue(dummyResponsesFilePath.toFile(), store.getAll());
+            jsonb.toJson(store.getAll(), Files.newBufferedWriter(dummyResponsesFilePath));
         } catch (Exception e) {
             LOGGER.error("error while dumping dummyserver store. we log the error and return", e);
         }

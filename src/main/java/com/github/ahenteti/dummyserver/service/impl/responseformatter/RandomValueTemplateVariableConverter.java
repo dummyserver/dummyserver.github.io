@@ -1,12 +1,16 @@
 package com.github.ahenteti.dummyserver.service.impl.responseformatter;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RandomValueTemplateVariableConverter extends BaseTemplateVariableConverter {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RandomValueTemplateVariableConverter.class);
 
     public static final int RANDOM_VALUE_DEFAULT_LENGTH = 10;
     public static final String RANDOM_VALUE_DEFAULT_TYPE = "ALPHANUMERIC";
@@ -39,7 +43,7 @@ public class RandomValueTemplateVariableConverter extends BaseTemplateVariableCo
                 rawValue = RandomStringUtils.randomAscii(length);
                 break;
             case "NUMERIC":
-                rawValue = RandomStringUtils.randomNumeric(length);
+                rawValue = randomNumeric(length);
                 break;
             default:
                 rawValue = RandomStringUtils.randomAlphanumeric(length);
@@ -48,6 +52,15 @@ public class RandomValueTemplateVariableConverter extends BaseTemplateVariableCo
         if (uppercase) return rawValue.toUpperCase();
         if (lowercase) return rawValue.toLowerCase();
         return rawValue;
+    }
+
+    private String randomNumeric(int length) {
+        try {
+            return Integer.valueOf(RandomStringUtils.randomNumeric(length)).toString();
+        } catch (Exception e) {
+            LOGGER.debug("error while generating random number", e);
+            return "1";
+        }
     }
 
     private int getLength(String options) {

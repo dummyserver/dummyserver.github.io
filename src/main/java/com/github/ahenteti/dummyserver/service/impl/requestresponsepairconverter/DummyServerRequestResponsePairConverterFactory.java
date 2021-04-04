@@ -1,4 +1,4 @@
-package com.github.ahenteti.dummyserver.service.impl;
+package com.github.ahenteti.dummyserver.service.impl.requestresponsepairconverter;
 
 import com.github.ahenteti.dummyserver.exception.InternalServerErrorException;
 import com.github.ahenteti.dummyserver.service.IDummyServerRequestResponsePairConverter;

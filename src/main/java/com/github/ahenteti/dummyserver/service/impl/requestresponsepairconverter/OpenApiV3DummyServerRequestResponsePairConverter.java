@@ -1,4 +1,4 @@
-package com.github.ahenteti.dummyserver.service.impl;
+package com.github.ahenteti.dummyserver.service.impl.requestresponsepairconverter;
 
 import com.github.ahenteti.dummyserver.exception.InternalServerErrorException;
 import com.github.ahenteti.dummyserver.model.DummyServerRequest;
@@ -10,6 +10,8 @@ import com.github.ahenteti.dummyserver.service.impl.utils.FileUtils;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Operation;
 import io.swagger.v3.oas.models.PathItem;
+import io.swagger.v3.oas.models.media.MediaType;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 import org.slf4j.Logger;
@@ -31,6 +33,12 @@ public class OpenApiV3DummyServerRequestResponsePairConverter implements IDummyS
 
     private OpenAPIV3Parser openApi3Parser = new OpenAPIV3Parser();
 
+    private OpenApiV3SchemaConverter schemaConverter = new OpenApiV3SchemaConverter();
+
+    private Map<String, Object> openApiSchemas;
+
+    private OpenAPI openApi;
+
     @Override
     public DummyServerRequestResponsePair[] toRequestResponsePairs(String requestBody) {
         Path openApiV3Path = null;
@@ -38,7 +46,8 @@ public class OpenApiV3DummyServerRequestResponsePairConverter implements IDummyS
             List<DummyServerRequestResponsePair> res = new ArrayList<>();
             openApiV3Path = Files.createTempFile("openapiv3", ".json");
             Files.writeString(openApiV3Path, requestBody);
-            OpenAPI openApi = openApi3Parser.read(openApiV3Path.toAbsolutePath().toString());
+            openApi = openApi3Parser.read(openApiV3Path.toAbsolutePath().toString());
+            openApiSchemas = schemaConverter.getModels(openApi);
             for (Map.Entry<String, PathItem> pathEntry : openApi.getPaths().entrySet()) {
                 String pathString = pathEntry.getKey();
                 PathItem path = pathEntry.getValue();
@@ -76,14 +85,24 @@ public class OpenApiV3DummyServerRequestResponsePairConverter implements IDummyS
     private DummyServerRequest toDummyServerRequest(String path, Map.Entry<String, Operation> operation) {
         DummyServerRequest res = new DummyServerRequest();
         res.setMethod(operation.getKey().toUpperCase());
-        res.setPath(path.replaceAll("\\{.+?}", "(.+?)"));
+        res.setPath("/api" + path.replaceAll("\\{.+?}", "(.+?)"));
         return res;
     }
 
     private DummyServerResponse toDummyServerResponse(Map.Entry<String, Operation> operation) {
         DummyServerResponse res = new DummyServerResponse();
-        if (operation.getValue().getResponses().get("200") != null) {
+        ApiResponse okResponse = operation.getValue().getResponses().get("200");
+        if (okResponse != null) {
             res.setStatus(200);
+            MediaType jsonResponse = okResponse.getContent().get("application/json");
+            if (jsonResponse != null) {
+                Schema schema = jsonResponse.getSchema();
+                if (schema.get$ref() != null && openApiSchemas.get(schema.get$ref()) != null) {
+                    res.setBody(openApiSchemas.get(schema.get$ref()));
+                } else {
+                    res.setBody(schemaConverter.convert(schema, openApi));
+                }
+            }
         } else {
             res.setStatus(404);
             for (Map.Entry<String, ApiResponse> responseEntry : operation.getValue().getResponses().entrySet()) {
