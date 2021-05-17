@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.github.ahenteti</groupId>
-    <artifactId>dummy-server</artifactId>
+    <artifactId>dummyserver</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>dummy-server</name>
+    <name>dummyserver</name>
     <description>Dummy Server</description>
     <properties>
         <java.version>11</java.version>
