@@ -1,6 +1,6 @@
 package com.github.ahenteti.dummyserver.service.impl.restapiresponseformatter;
 
-import com.github.ahenteti.dummyserver.service.IRestApiResponseBodyFormatter;
+import com.github.ahenteti.dummyserver.service.IDummyHttpResponseBodyFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class RestApiResponseBodyFormatter implements IRestApiResponseBodyFormatter {
+public class DummyHttpResponseBodyFormatter implements IDummyHttpResponseBodyFormatter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestApiResponseBodyFormatter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DummyHttpResponseBodyFormatter.class);
 
     @Autowired
     private TemplateVariableConverterFactory templateVariableConverterFactory;

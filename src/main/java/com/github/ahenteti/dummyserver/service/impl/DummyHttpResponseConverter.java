@@ -1,8 +1,8 @@
 package com.github.ahenteti.dummyserver.service.impl;
 
-import com.github.ahenteti.dummyserver.model.RestApiResponse;
-import com.github.ahenteti.dummyserver.service.IRestApiResponseBodyFormatter;
-import com.github.ahenteti.dummyserver.service.IRestApiResponseConverter;
+import com.github.ahenteti.dummyserver.model.DummyHttpResponse;
+import com.github.ahenteti.dummyserver.service.IDummyHttpResponseBodyFormatter;
+import com.github.ahenteti.dummyserver.service.IDummyHttpResponseConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +13,15 @@ import javax.json.JsonString;
 import javax.servlet.http.HttpServletRequest;
 
 @Service
-public class RestApiResponseConverter implements IRestApiResponseConverter {
+public class DummyHttpResponseConverter implements IDummyHttpResponseConverter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestApiResponseConverter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DummyHttpResponseConverter.class);
 
     @Autowired
-    private IRestApiResponseBodyFormatter bodyFormatter;
+    private IDummyHttpResponseBodyFormatter bodyFormatter;
 
     @Override
-    public ResponseEntity<?> toResponseEntity(RestApiResponse response, HttpServletRequest request) {
+    public ResponseEntity<?> toResponseEntity(DummyHttpResponse response, HttpServletRequest request) {
         sleepSilently(response);
         ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.status(response.getStatus());
         response.getHeaders().forEach(responseBuilder::header);
@@ -34,7 +34,7 @@ public class RestApiResponseConverter implements IRestApiResponseConverter {
         return responseBuilder.body(bodyFormatter.format(response.getBody(), request));
     }
 
-    private void sleepSilently(RestApiResponse response) {
+    private void sleepSilently(DummyHttpResponse response) {
         if (response.getDelayInMillis() <= 0) return;
         try {
             Thread.sleep(response.getDelayInMillis());

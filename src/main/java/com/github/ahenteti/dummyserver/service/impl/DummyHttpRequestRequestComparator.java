@@ -1,7 +1,7 @@
 package com.github.ahenteti.dummyserver.service.impl;
 
-import com.github.ahenteti.dummyserver.model.RestApiRequest;
-import com.github.ahenteti.dummyserver.service.IRestApiRequestComparator;
+import com.github.ahenteti.dummyserver.model.DummyHttpRequest;
+import com.github.ahenteti.dummyserver.service.IDummyHttpRequestComparator;
 import com.github.ahenteti.dummyserver.service.impl.utils.ValueUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Service
-public class RestApiRequestComparator implements IRestApiRequestComparator {
+public class DummyHttpRequestRequestComparator implements IDummyHttpRequestComparator {
 
     @Override
-    public boolean equals(RestApiRequest dummyServerRequest, HttpServletRequest httpServletRequest) {
+    public boolean equals(DummyHttpRequest dummyServerRequest, HttpServletRequest httpServletRequest) {
         if (!httpServletRequest.getRequestURI().matches(dummyServerRequest.getPath())) return false;
         if (!StringUtils.equalsIgnoreCase(dummyServerRequest.getMethod(), httpServletRequest.getMethod())) return false;
         for (Map.Entry<String, Object> query : dummyServerRequest.getQueries().entrySet()) {

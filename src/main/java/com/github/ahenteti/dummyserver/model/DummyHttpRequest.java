@@ -9,7 +9,7 @@ import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 @Data
-public class RestApiRequest {
+public class DummyHttpRequest {
 
     private String method = "GET";
     private String path;
@@ -19,8 +19,8 @@ public class RestApiRequest {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof RestApiRequest)) return false;
-        RestApiRequest that = (RestApiRequest) o;
+        if (!(o instanceof DummyHttpRequest)) return false;
+        DummyHttpRequest that = (DummyHttpRequest) o;
         return Objects.equals(this.toString(), that.toString());
     }
 
@@ -31,7 +31,7 @@ public class RestApiRequest {
 
     @Override
     public String toString() {
-        return new StringJoiner(", ", RestApiRequest.class.getSimpleName() + "[", "]")
+        return new StringJoiner(", ", DummyHttpRequest.class.getSimpleName() + "[", "]")
                 .add("method='" + method + "'").add("path='" + path + "'").add("queries=" + toString(queries))
                 .add("headers=" + toString(headers)).toString();
     }

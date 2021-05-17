@@ -1,11 +1,11 @@
 package com.github.ahenteti.dummyserver.controller;
 
-import com.github.ahenteti.dummyserver.model.RestApi;
-import com.github.ahenteti.dummyserver.model.RestApiResponse;
-import com.github.ahenteti.dummyserver.service.IRestApiConverter;
-import com.github.ahenteti.dummyserver.service.IRestApiConverterFactory;
-import com.github.ahenteti.dummyserver.service.IRestApiResponseConverter;
-import com.github.ahenteti.dummyserver.service.IRestApiStore;
+import com.github.ahenteti.dummyserver.model.DummyHttpRequestResponsePair;
+import com.github.ahenteti.dummyserver.model.DummyHttpResponse;
+import com.github.ahenteti.dummyserver.service.IDummyHttpRequestResponsePairConverter;
+import com.github.ahenteti.dummyserver.service.IDummyHttpRequestResponsePairConverterFactory;
+import com.github.ahenteti.dummyserver.service.IDummyHttpResponseConverter;
+import com.github.ahenteti.dummyserver.service.IDummyHttpRequestResponsePairStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,38 +28,55 @@ public class RestApiController {
     public static final int FIRST_RESPONSE = 0;
 
     @Autowired
-    private IRestApiStore requestResponsePairStore;
+    private IDummyHttpRequestResponsePairStore requestResponsePairStore;
 
     @Autowired
-    private IRestApiConverterFactory requestResponsePairConverterFactory;
+    private IDummyHttpRequestResponsePairConverterFactory requestResponsePairConverterFactory;
 
     @Autowired
-    private IRestApiResponseConverter responseConverter;
+    private IDummyHttpResponseConverter responseConverter;
 
 
-    @PostMapping("/__admin/rest-api")
-    public void addDummyResponse(@RequestBody RestApi request) {
+    @PostMapping("/__admin/dummy-http-request-response-pair")
+    public void addDummyHttpRequestResponsePair(@RequestBody DummyHttpRequestResponsePair request) {
         this.requestResponsePairStore.add(request);
     }
 
-    @DeleteMapping("/__admin/rest-api")
-    public void removeDummyResponse(@RequestBody RestApi request) {
+    @DeleteMapping("/__admin/dummy-http-request-response-pair")
+    public void removeDummyHttpRequestResponsePair(@RequestBody DummyHttpRequestResponsePair request) {
         this.requestResponsePairStore.remove(request);
     }
 
-    @GetMapping("/__admin/rest-apis")
-    public Set<RestApi> getDummyResponseList() {
+    @GetMapping("/__admin/dummy-http-request-response-pairs")
+    public Set<DummyHttpRequestResponsePair> getDummyHttpRequestResponsePairs() {
         return this.requestResponsePairStore.getAll();
     }
 
-    @PostMapping("/__admin/rest-apis")
-    public void addDummyResponseList(@RequestBody String requestBody, @RequestParam(value = "format", required = false) String requestBodyFormatRequestParam, @RequestHeader(value = "X-Request-Body-Format", required = false) String requestBodyFormatRequestHeader) {
+    @PostMapping("/__admin/dummy-http-request-response-pairs")
+    public void addDummyHttpRequestResponsePairs(@RequestBody String requestBody, @RequestParam(value = "format", required = false) String requestBodyFormatRequestParam, @RequestHeader(value = "X-Request-Body-Format", required = false) String requestBodyFormatRequestHeader) {
         String requestBodyFormat = getRequestBodyFormat(requestBodyFormatRequestParam, requestBodyFormatRequestHeader);
-        IRestApiConverter requestResponsePairConverter = requestResponsePairConverterFactory
+        IDummyHttpRequestResponsePairConverter requestResponsePairConverter = requestResponsePairConverterFactory
                 .create(requestBodyFormat);
-        RestApi[] requestResponsePairs = requestResponsePairConverter
+        DummyHttpRequestResponsePair[] requestResponsePairs = requestResponsePairConverter
                 .toRequestResponsePairs(requestBody);
         requestResponsePairStore.add(requestResponsePairs);
+    }
+
+    @DeleteMapping("/__admin/dummy-http-request-response-pairs")
+    public void removeDummyHttpRequestResponsePairs() {
+        this.requestResponsePairStore.clear();
+    }
+
+    @RequestMapping("/api/**")
+    public ResponseEntity<?> getDummyResponse(HttpServletRequest request) {
+        List<DummyHttpRequestResponsePair> requestResponsePairList = requestResponsePairStore
+                .getByHttpRequest(request);
+        if (requestResponsePairList.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        requestResponsePairList.sort(Comparator.comparing(DummyHttpRequestResponsePair::getPriority));
+        DummyHttpResponse response = requestResponsePairList.get(FIRST_RESPONSE).getResponse();
+        return responseConverter.toResponseEntity(response, request);
     }
 
     private String getRequestBodyFormat(String requestBodyTypeRequestParam, String requestBodyTypeRequestHeader) {
@@ -70,22 +87,5 @@ public class RestApiController {
             return requestBodyTypeRequestHeader;
         }
         return "DEFAULT";
-    }
-
-    @DeleteMapping("/__admin/rest-apis")
-    public void removeDummyResponseList() {
-        this.requestResponsePairStore.clear();
-    }
-
-    @RequestMapping("/api/**")
-    public ResponseEntity<?> getDummyResponse(HttpServletRequest request) {
-        List<RestApi> requestResponsePairList = requestResponsePairStore
-                .getByHttpRequest(request);
-        if (requestResponsePairList.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        requestResponsePairList.sort(Comparator.comparing(RestApi::getPriority));
-        RestApiResponse response = requestResponsePairList.get(FIRST_RESPONSE).getResponse();
-        return responseConverter.toResponseEntity(response, request);
     }
 }

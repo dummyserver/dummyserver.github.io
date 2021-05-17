@@ -7,19 +7,19 @@ import java.util.Objects;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RestApi {
+public class DummyHttpRequestResponsePair {
 
     private Integer priority = 5;
     private String name;
     private String description;
-    private RestApiRequest request;
-    private RestApiResponse response;
+    private DummyHttpRequest request;
+    private DummyHttpResponse response;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof RestApi)) return false;
-        RestApi that = (RestApi) o;
+        if (!(o instanceof DummyHttpRequestResponsePair)) return false;
+        DummyHttpRequestResponsePair that = (DummyHttpRequestResponsePair) o;
         return Objects.equals(request, that.request);
     }
 

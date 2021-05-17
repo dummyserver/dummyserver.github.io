@@ -7,7 +7,7 @@ import java.util.Map;
 public class ValueUtils {
 
     private ValueUtils() {
-        throw new IllegalStateException("Utility class and not designed to be instantiated");
+        throw new IllegalStateException("Utility class contains only static methods");
     }
 
     private static final String CONTAINS_EXPECTATION = "contains";

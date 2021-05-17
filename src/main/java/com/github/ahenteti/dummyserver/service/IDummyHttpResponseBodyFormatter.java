@@ -2,7 +2,7 @@ package com.github.ahenteti.dummyserver.service;
 
 import javax.servlet.http.HttpServletRequest;
 
-public interface IRestApiResponseBodyFormatter {
+public interface IDummyHttpResponseBodyFormatter {
 
     String format(String body, HttpServletRequest request);
 

@@ -1,6 +1,6 @@
 package com.github.ahenteti.dummyserver.service.impl;
 
-import com.github.ahenteti.dummyserver.service.IRestApiStore;
+import com.github.ahenteti.dummyserver.service.IDummyHttpRequestResponsePairStore;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -19,24 +19,24 @@ import java.nio.file.Paths;
 
 @Aspect
 @Component
-public class RestApiStoreDumper {
+public class DummyHttpRequestResponsePairStoreDumper {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RestApiStoreDumper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DummyHttpRequestResponsePairStoreDumper.class);
 
     @Autowired
-    private IRestApiStore store;
+    private IDummyHttpRequestResponsePairStore store;
 
-    @Value("${restapi.responses.file}")
-    private String restApiResponsesFile;
+    @Value("${dummy.http.request.response.pairs.file}")
+    private String dummyHttpRequestResponsePairsFile;
 
-    @Value("${restapi.responses.file.autodump}")
+    @Value("${dummy.http.request.response.pairs.file.autodump}")
     private boolean autoDump;
 
-    @After("@annotation(com.github.ahenteti.dummyserver.service.impl.DumpRestApiStore)")
+    @After("@annotation(com.github.ahenteti.dummyserver.service.impl.Dump)")
     public void dumpStore(JoinPoint joinPoint) {
         if (!autoDump) return;
         try (Jsonb jsonb = JsonbBuilder.create()) {
-            Path dummyResponsesFilePath = Paths.get(restApiResponsesFile);
+            Path dummyResponsesFilePath = Paths.get(dummyHttpRequestResponsePairsFile);
             createFileIfNotExists(dummyResponsesFilePath);
             jsonb.toJson(store.getAll(), Files.newBufferedWriter(dummyResponsesFilePath));
         } catch (Exception e) {

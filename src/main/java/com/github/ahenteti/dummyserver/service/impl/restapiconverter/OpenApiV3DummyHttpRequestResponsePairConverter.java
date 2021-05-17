@@ -1,10 +1,10 @@
 package com.github.ahenteti.dummyserver.service.impl.restapiconverter;
 
-import com.github.ahenteti.dummyserver.exception.InternalServerErrorException;
-import com.github.ahenteti.dummyserver.model.RestApiRequest;
-import com.github.ahenteti.dummyserver.model.RestApi;
-import com.github.ahenteti.dummyserver.model.RestApiResponse;
-import com.github.ahenteti.dummyserver.service.IRestApiConverter;
+import com.github.ahenteti.dummyserver.exception.DummyServerException;
+import com.github.ahenteti.dummyserver.model.DummyHttpRequest;
+import com.github.ahenteti.dummyserver.model.DummyHttpRequestResponsePair;
+import com.github.ahenteti.dummyserver.model.DummyHttpResponse;
+import com.github.ahenteti.dummyserver.service.IDummyHttpRequestResponsePairConverter;
 import com.github.ahenteti.dummyserver.service.impl.utils.ArrayUtils;
 import com.github.ahenteti.dummyserver.service.impl.utils.FileUtils;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -26,10 +26,10 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class OpenApiV3RestApiConverter implements IRestApiConverter {
+public class OpenApiV3DummyHttpRequestResponsePairConverter implements IDummyHttpRequestResponsePairConverter {
 
     private static final Logger LOGGER = LoggerFactory
-            .getLogger(OpenApiV3RestApiConverter.class);
+            .getLogger(OpenApiV3DummyHttpRequestResponsePairConverter.class);
 
     private OpenAPIV3Parser openApi3Parser = new OpenAPIV3Parser();
 
@@ -40,10 +40,10 @@ public class OpenApiV3RestApiConverter implements IRestApiConverter {
     private OpenAPI openApi;
 
     @Override
-    public RestApi[] toRequestResponsePairs(String requestBody) {
+    public DummyHttpRequestResponsePair[] toRequestResponsePairs(String requestBody) {
         Path openApiV3Path = null;
         try {
-            List<RestApi> res = new ArrayList<>();
+            List<DummyHttpRequestResponsePair> res = new ArrayList<>();
             openApiV3Path = Files.createTempFile("openapiv3", ".json");
             Files.writeString(openApiV3Path, requestBody);
             openApi = openApi3Parser.read(openApiV3Path.toAbsolutePath().toString());
@@ -52,7 +52,7 @@ public class OpenApiV3RestApiConverter implements IRestApiConverter {
                 String pathString = pathEntry.getKey();
                 PathItem path = pathEntry.getValue();
                 for (Map.Entry<String, Operation> operationEntry : getOperations(path).entrySet()) {
-                    RestApi reqResPair = new RestApi();
+                    DummyHttpRequestResponsePair reqResPair = new DummyHttpRequestResponsePair();
                     reqResPair.setName(operationEntry.getKey().toUpperCase() + " " + pathString);
                     reqResPair.setDescription(operationEntry.getValue().getDescription());
                     reqResPair.setRequest(toDummyServerRequest(pathString, operationEntry));
@@ -61,9 +61,9 @@ public class OpenApiV3RestApiConverter implements IRestApiConverter {
                 }
             }
 
-            return ArrayUtils.toArray(res, RestApi.class);
+            return ArrayUtils.toArray(res, DummyHttpRequestResponsePair.class);
         } catch (Exception e) {
-            throw new InternalServerErrorException("error while converting responseBody to an array of DummyServerRequestResponsePair. requestBody: " + requestBody, e);
+            throw new DummyServerException("error while converting responseBody to an array of DummyServerRequestResponsePair. requestBody: " + requestBody, e);
         } finally {
             FileUtils.deleteSilently(openApiV3Path);
         }
@@ -82,15 +82,15 @@ public class OpenApiV3RestApiConverter implements IRestApiConverter {
         return res;
     }
 
-    private RestApiRequest toDummyServerRequest(String path, Map.Entry<String, Operation> operation) {
-        RestApiRequest res = new RestApiRequest();
+    private DummyHttpRequest toDummyServerRequest(String path, Map.Entry<String, Operation> operation) {
+        DummyHttpRequest res = new DummyHttpRequest();
         res.setMethod(operation.getKey().toUpperCase());
         res.setPath("/api" + path.replaceAll("\\{.+?}", "(.+?)"));
         return res;
     }
 
-    private RestApiResponse toDummyServerResponse(Map.Entry<String, Operation> operation) {
-        RestApiResponse res = new RestApiResponse();
+    private DummyHttpResponse toDummyServerResponse(Map.Entry<String, Operation> operation) {
+        DummyHttpResponse res = new DummyHttpResponse();
         ApiResponse okResponse = operation.getValue().getResponses().get("200");
         if (okResponse != null) {
             res.setStatus(200);

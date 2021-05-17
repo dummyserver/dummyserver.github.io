@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RestApiResponse {
+public class DummyHttpResponse {
 
     private Integer status;
     private Map<String, String> headers = new HashMap<>();
